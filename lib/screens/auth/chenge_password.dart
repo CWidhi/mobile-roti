@@ -118,7 +118,7 @@ class LogoWithTitle extends StatelessWidget {
             children: [
               SizedBox(height: constraints.maxHeight * 0.1),
               Image.asset(
-                "assets/img/logo.jpeg",
+                "assets/img/logo_rb_circle.png",
                 height: 100,
               ),
               SizedBox(

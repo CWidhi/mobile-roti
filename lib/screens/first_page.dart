@@ -18,7 +18,7 @@ class SigninOrSignupScreen extends StatelessWidget {
 
               /// LOGO
               Image.asset(
-                "assets/img/logo.jpeg",
+                "assets/img/logo_rb_circle.png",
                 height: 140,
               ),
 

@@ -91,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               /// LOGO
               Image.asset(
-                "assets/img/logo.jpeg",
+                "assets/img/logo_rb_circle.png",
                 height: 120,
               ),
 

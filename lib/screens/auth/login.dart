@@ -92,7 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
               /// LOGO
               Image.asset(
-                "assets/img/logo.jpeg",
+                "assets/img/logo_rb_circle.png",
                 height: 120,
               ),
 

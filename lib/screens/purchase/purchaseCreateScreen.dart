@@ -359,14 +359,14 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
 
 const _labelStyle = TextStyle(fontWeight: FontWeight.w600);
 
-Widget _inputContainer({required Widget child}) => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F6F9),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: child,
-    );
+// Widget _inputContainer({required Widget child}) => Container(
+//       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+//       decoration: BoxDecoration(
+//         color: const Color(0xFFF5F6F9),
+//         borderRadius: BorderRadius.circular(12),
+//       ),
+//       child: child,
+//     );
 
 Widget _dropdown<T>({
   required T? value,

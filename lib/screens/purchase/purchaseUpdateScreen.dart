@@ -425,24 +425,24 @@ Widget _dropdown<T>({
   );
 }
 
-Widget _textField({
-  required String hint,
-  TextInputType keyboardType = TextInputType.text,
-  required ValueChanged<String> onChanged,
-}) =>
-    TextField(
-      keyboardType: keyboardType,
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: const Color(0xFFF5F6F9),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
+// Widget _textField({
+//   required String hint,
+//   TextInputType keyboardType = TextInputType.text,
+//   required ValueChanged<String> onChanged,
+// }) =>
+//     TextField(
+//       keyboardType: keyboardType,
+//       onChanged: onChanged,
+//       decoration: InputDecoration(
+//         hintText: hint,
+//         filled: true,
+//         fillColor: const Color(0xFFF5F6F9),
+//         border: OutlineInputBorder(
+//           borderRadius: BorderRadius.circular(12),
+//           borderSide: BorderSide.none,
+//         ),
+//       ),
+//     );
 
 Widget _loadingBox() => Container(
       height: 48,
