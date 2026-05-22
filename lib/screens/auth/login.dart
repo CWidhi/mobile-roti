@@ -44,7 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   "Login berhasil!",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -71,7 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   error,
                   style: const TextStyle(color: Colors.white, fontSize: 16),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -91,20 +91,14 @@ class _SignInScreenState extends State<SignInScreen> {
               const SizedBox(height: 60),
 
               /// LOGO
-              Image.asset(
-                "assets/img/logo_rb_circle.png",
-                height: 120,
-              ),
+              Image.asset("assets/img/logo_rb_circle.png", height: 120),
 
               const SizedBox(height: 32),
 
               /// TITLE
               const Text(
                 "Sign In",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(height: 8),
@@ -125,6 +119,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     TextFormField(
                       controller: controller.email,
                       keyboardType: TextInputType.emailAddress,
+                      style: const TextStyle(color: Colors.black),
                       decoration: _inputDecoration("Email"),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -140,6 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     TextFormField(
                       controller: controller.password,
                       obscureText: true,
+                      style: const TextStyle(color: Colors.black),
                       decoration: _inputDecoration("Password"),
                       validator: (value) {
                         if (value == null || value.isEmpty) {

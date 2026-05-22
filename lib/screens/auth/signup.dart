@@ -123,6 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     _input(
                       hint: "First Name",
                       controller: controller.firstName,
+                      
                     ),
                     const SizedBox(height: 16),
                     _input(
@@ -223,6 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboardType,
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
