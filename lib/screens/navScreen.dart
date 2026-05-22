@@ -131,6 +131,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
         ),
 
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          selectedItemColor: const Color(0xFFFF7643),
+          unselectedItemColor: inActiveIconColor,
           currentIndex: currentSelectedIndex,
           onTap: updateCurrentIndex,
           showSelectedLabels: false,
