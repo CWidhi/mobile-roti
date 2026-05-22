@@ -5,6 +5,7 @@ class Payment {
   final String userEmail;
   final String userName;
   final String orderPicking;
+  final int orderPickingTotal;
   final DateTime paymentDate;
   final int totalOrder;
   final int totalPaid;
@@ -17,6 +18,7 @@ class Payment {
     required this.userEmail,
     required this.userName,
     required this.orderPicking,
+    required this.orderPickingTotal,
     required this.paymentDate,
     required this.totalOrder,
     required this.totalPaid,
@@ -34,6 +36,7 @@ class Payment {
       userEmail: user['email'],
       userName: "${user['first_name']} ${user['last_name']}",
       orderPicking: orderPicking?['rute']?['name'] ?? "-",
+      orderPickingTotal: orderPicking?['total'] ?? 0,
       paymentDate: DateTime.parse(json['payment_date']),
       totalOrder: json['total_order'],
       totalPaid: json['total_paid'],

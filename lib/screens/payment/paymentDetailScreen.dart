@@ -7,14 +7,10 @@ import 'package:frontend_roti/services/auth/userService.dart';
 import 'package:frontend_roti/services/products/productServices.dart';
 import 'package:frontend_roti/models/product.dart';
 
-
 class PaymentDetailScreen extends StatefulWidget {
   final int paymentId;
 
-  const PaymentDetailScreen({
-    super.key,
-    required this.paymentId,
-  });
+  const PaymentDetailScreen({super.key, required this.paymentId});
 
   @override
   State<PaymentDetailScreen> createState() => _PaymentDetailScreenState();
@@ -77,6 +73,9 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (payment == null) {
+      return const Scaffold(body: Center(child: Text("Data tidak ditemukan")));
+    }
     final currency = NumberFormat.currency(
       locale: 'id_ID',
       symbol: 'Rp ',
@@ -84,6 +83,9 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
     );
 
     final dateFormat = DateFormat('dd MMM yyyy');
+    final data = payment!;
+
+    final totalReturBs = data.orderPickingTotal - data.totalOrder;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6F9),
@@ -98,89 +100,84 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
       body: loadingUser || loadingPayment
           ? const Center(child: CircularProgressIndicator())
           : payment == null
-              ? const Center(child: Text("Data tidak ditemukan"))
-              : ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    /// ===== DETAIL =====
-                    _sectionCard(
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _infoRow("Sales", payment!.userName),
-                          _infoRow("Email", payment!.userEmail),
-                          _infoRow(
-                            "Order Picking",
-                            "#${payment!.orderPicking}",
-                          ),
-                          _infoRow(
-                            "Tanggal",
-                            dateFormat.format(payment!.paymentDate),
-                          ),
-                          _infoRow("Status", payment!.status),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    /// ===== SUMMARY =====
-                    _sectionCard(
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _infoRow(
-                            "Total Order",
-                            currency.format(payment!.totalOrder),
-                          ),
-                          _infoRow(
-                            "Total Dibayar",
-                            currency.format(payment!.totalPaid),
-                          ),
-                          _infoRow(
-                            "Sisa Pembayaran",
-                            currency.format(payment!.remainingAmount),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    /// ===== ITEMS =====
-                    _sectionCard(
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Daftar Item",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          if (payment!.items.isEmpty)
-                            _emptyItemState()
-                          else
-                            Column(
-                              children: payment!.items
-                                  .map(
-                                    (item) => _itemCard(item, currency),
-                                  )
-                                  .toList(),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
+          ? const Center(child: Text("Data tidak ditemukan"))
+          : ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                /// ===== DETAIL =====
+                _sectionCard(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _infoRow("Sales", data.userName),
+                      _infoRow("Email", data.userEmail),
+                      _infoRow("Order Picking", "#${data.orderPicking}"),
+                      _infoRow("Tanggal", dateFormat.format(data.paymentDate)),
+                      _infoRow("Status", data.status),
+                    ],
+                  ),
                 ),
 
+                const SizedBox(height: 16),
+
+                /// ===== SUMMARY =====
+                _sectionCard(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _infoRow(
+                        "Total Order",
+                        currency.format(data.orderPickingTotal),
+                      ),
+                      _infoRow("Total Retur/Bs", currency.format(totalReturBs)),
+                      _infoRow("Total Bayar", currency.format(data.totalOrder)),
+                      _infoRow(
+                        "Total Dibayar",
+                        currency.format(data.totalPaid),
+                      ),
+                      _infoRow(
+                        "Sisa Pembayaran",
+                        currency.format(data.remainingAmount),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                /// ===== ITEMS =====
+                _sectionCard(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Daftar Item",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      if (data.items.isEmpty)
+                        _emptyItemState()
+                      else
+                        Column(
+                          children: data.items
+                              .map((item) => _itemCard(item, currency))
+                              .toList(),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
       /// ================= BOTTOM BAR (ADMIN ONLY) =================
-      bottomNavigationBar: isAdmin && payment != null
+      bottomNavigationBar: payment != null
           ? _BottomBar(
-              payment: payment!,
+              payment: data,
               onRefresh: _refreshPayment,
+              isAdmin: isAdmin,
             )
           : null,
     );
@@ -206,10 +203,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: const TextStyle(color: Colors.grey)),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
         ],
       ),
     );
@@ -221,16 +215,9 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
       padding: const EdgeInsets.symmetric(vertical: 32),
       child: Column(
         children: const [
-          Icon(
-            Icons.inventory_2_outlined,
-            size: 48,
-            color: Colors.grey,
-          ),
+          Icon(Icons.inventory_2_outlined, size: 48, color: Colors.grey),
           SizedBox(height: 8),
-          Text(
-            "Belum ada item",
-            style: TextStyle(color: Colors.grey),
-          ),
+          Text("Belum ada item", style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
@@ -252,10 +239,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
         children: [
           Text(
             item.productName,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           const SizedBox(height: 6),
           Row(
@@ -298,10 +282,12 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
 class _BottomBar extends StatelessWidget {
   final Payment payment;
   final VoidCallback onRefresh;
+  final bool isAdmin;
 
   const _BottomBar({
-    required this.payment,
-    required this.onRefresh,
+    required this.isAdmin, 
+    required this.payment, 
+    required this.onRefresh
   });
 
   static const primaryColor = Color(0xFFFF7643);
@@ -345,10 +331,7 @@ class _BottomBar extends StatelessWidget {
                   onSuccess: onRefresh,
                 );
               },
-              icon: const Icon(
-                Icons.add,
-                color: primaryColor,
-              ),
+              icon: const Icon(Icons.add, color: primaryColor),
               label: const Text(
                 "Tambah Retur",
                 style: TextStyle(
@@ -359,7 +342,7 @@ class _BottomBar extends StatelessWidget {
               ),
             ),
 
-            if (payment.totalPaid == 0) ...[
+            if (isAdmin && payment.totalPaid == 0) ...[
               const SizedBox(height: 12),
 
               /// ================= PAYMENT =================
@@ -391,7 +374,7 @@ class _BottomBar extends StatelessWidget {
             ],
 
             /// ================= REPAYMENT (CICILAN) =================
-            if (payment.totalPaid > 0 &&
+            if (isAdmin && payment.totalPaid > 0 &&
                 payment.remainingAmount < payment.totalOrder) ...[
               const SizedBox(height: 12),
               OutlinedButton.icon(
@@ -463,10 +446,7 @@ void showPaymentModal({
                 const SizedBox(height: 8),
                 const Text(
                   "Tambah Pembayaran",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
                 TextButton.icon(
@@ -482,9 +462,7 @@ void showPaymentModal({
                     }
                   },
                   icon: const Icon(Icons.date_range),
-                  label: Text(
-                    DateFormat('dd MMM yyyy').format(selectedDate),
-                  ),
+                  label: Text(DateFormat('dd MMM yyyy').format(selectedDate)),
                 ),
                 const SizedBox(height: 12),
                 TextField(
@@ -508,14 +486,16 @@ void showPaymentModal({
                     onPressed: isLoading
                         ? null
                         : () async {
-                            final totalPaid =
-                                int.tryParse(totalController.text);
+                            final totalPaid = int.tryParse(
+                              totalController.text,
+                            );
 
                             if (totalPaid == null || totalPaid <= 0) {
                               ScaffoldMessenger.of(parentContext).showSnackBar(
                                 const SnackBar(
-                                  content:
-                                      Text("Jumlah pembayaran tidak valid"),
+                                  content: Text(
+                                    "Jumlah pembayaran tidak valid",
+                                  ),
                                 ),
                               );
                               return;
@@ -540,22 +520,24 @@ void showPaymentModal({
 
                               onSuccess();
                             } catch (e) {
-                              Navigator.pop(context); // 🔥 TUTUP MODAL SAAT ERROR
+                              Navigator.pop(
+                                context,
+                              ); // 🔥 TUTUP MODAL SAAT ERROR
 
-                              String message =
-                                  e.toString().replaceFirst("Exception: ", "");
-
-                              ScaffoldMessenger.of(parentContext).showSnackBar(
-                                SnackBar(content: Text(message)),
+                              String message = e.toString().replaceFirst(
+                                "Exception: ",
+                                "",
                               );
+
+                              ScaffoldMessenger.of(
+                                parentContext,
+                              ).showSnackBar(SnackBar(content: Text(message)));
                             } finally {
                               setState(() => isLoading = false);
                             }
                           },
                     child: isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                        ? const CircularProgressIndicator(color: Colors.white)
                         : const Text(
                             "Simpan Pembayaran",
                             style: TextStyle(color: Colors.white),
@@ -607,10 +589,7 @@ void showRepaymentModal({
                 const SizedBox(height: 8),
                 const Text(
                   "Cicil Pembayaran",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
 
@@ -628,9 +607,7 @@ void showRepaymentModal({
                     }
                   },
                   icon: const Icon(Icons.date_range),
-                  label: Text(
-                    DateFormat('dd MMM yyyy').format(selectedDate),
-                  ),
+                  label: Text(DateFormat('dd MMM yyyy').format(selectedDate)),
                 ),
 
                 const SizedBox(height: 12),
@@ -669,8 +646,9 @@ void showRepaymentModal({
                             if (amount == null || amount <= 0) {
                               ScaffoldMessenger.of(parentContext).showSnackBar(
                                 const SnackBar(
-                                  content:
-                                      Text("Jumlah pembayaran tidak valid"),
+                                  content: Text(
+                                    "Jumlah pembayaran tidak valid",
+                                  ),
                                 ),
                               );
                               return;
@@ -696,21 +674,22 @@ void showRepaymentModal({
                               onSuccess();
                             } catch (e) {
                               Navigator.pop(
-                                  context); // 🔥 TUTUP MODAL SAAT ERROR
-                              String message =
-                                  e.toString().replaceFirst("Exception: ", "");
-
-                              ScaffoldMessenger.of(parentContext).showSnackBar(
-                                SnackBar(content: Text(message)),
+                                context,
+                              ); // 🔥 TUTUP MODAL SAAT ERROR
+                              String message = e.toString().replaceFirst(
+                                "Exception: ",
+                                "",
                               );
+
+                              ScaffoldMessenger.of(
+                                parentContext,
+                              ).showSnackBar(SnackBar(content: Text(message)));
                             } finally {
                               setState(() => isLoading = false);
                             }
                           },
                     child: isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                        ? const CircularProgressIndicator(color: Colors.white)
                         : const Text(
                             "Simpan Pembayaran",
                             style: TextStyle(
@@ -804,10 +783,7 @@ void showAddItemModal({
 
                 const Text(
                   "Tambah Item",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
 
                 const SizedBox(height: 16),
@@ -862,10 +838,7 @@ void showAddItemModal({
                       ? selectedUnit
                       : null,
                   items: PRODUCT_TYPE
-                      .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ))
+                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                       .toList(),
                   onChanged: (val) => setState(() => selectedUnit = val!),
                   decoration: InputDecoration(
@@ -880,14 +853,9 @@ void showAddItemModal({
 
                 /// ================= REFUND TYPE =================
                 DropdownButtonFormField<String>(
-                  value: ITEM_TYPE.contains(refundType)
-                      ? refundType
-                      : null,
+                  value: ITEM_TYPE.contains(refundType) ? refundType : null,
                   items: ITEM_TYPE
-                      .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ))
+                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                       .toList(),
                   onChanged: (val) => setState(() => refundType = val!),
                   decoration: InputDecoration(
@@ -904,10 +872,7 @@ void showAddItemModal({
                 DropdownButtonFormField<String>(
                   value: STORE_TYPE.contains(store) ? store : null,
                   items: STORE_TYPE
-                      .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ))
+                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                       .toList(),
                   onChanged: (val) => setState(() => store = val!),
                   decoration: InputDecoration(
@@ -939,7 +904,8 @@ void showAddItemModal({
                             if (selectedProduct == null) {
                               ScaffoldMessenger.of(parentContext).showSnackBar(
                                 const SnackBar(
-                                    content: Text("Produk belum dipilih")),
+                                  content: Text("Produk belum dipilih"),
+                                ),
                               );
                               return;
                             }
@@ -947,7 +913,8 @@ void showAddItemModal({
                             if (qty == null || qty <= 0) {
                               ScaffoldMessenger.of(parentContext).showSnackBar(
                                 const SnackBar(
-                                    content: Text("Qty tidak valid")),
+                                  content: Text("Qty tidak valid"),
+                                ),
                               );
                               return;
                             }
@@ -976,21 +943,20 @@ void showAddItemModal({
                             } catch (e) {
                               Navigator.pop(context); // 🔥 auto close
 
-                              String message = e
-                                  .toString()
-                                  .replaceFirst("Exception: ", "");
-
-                              ScaffoldMessenger.of(parentContext).showSnackBar(
-                                SnackBar(content: Text(message)),
+                              String message = e.toString().replaceFirst(
+                                "Exception: ",
+                                "",
                               );
+
+                              ScaffoldMessenger.of(
+                                parentContext,
+                              ).showSnackBar(SnackBar(content: Text(message)));
                             } finally {
                               setState(() => isLoading = false);
                             }
                           },
                     child: isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                        ? const CircularProgressIndicator(color: Colors.white)
                         : const Text(
                             "Simpan Item",
                             style: TextStyle(
