@@ -74,8 +74,7 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
       ),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
     );
   }
 
@@ -85,16 +84,12 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
     setState(() => submitting = true);
 
     try {
-      await PriceService.updatePrice(
-        widget.productId,
-        widget.priceId,
-        {
-          "unit": unit,
-          "qty": int.parse(qtyController.text),
-          "price": int.parse(priceController.text),
-          "typePrice": typePrice,
-        },
-      );
+      await PriceService.updatePrice(widget.productId, widget.priceId, {
+        "unit": unit,
+        "qty": int.parse(qtyController.text),
+        "price": int.parse(priceController.text),
+        "typePrice": typePrice,
+      });
 
       if (!mounted) return;
 
@@ -124,10 +119,10 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
     return Scaffold(
       backgroundColor: bgSoft,
       appBar: AppBar(
-       title: const Text(
-          "Daftar Harga",
-          style: TextStyle(color: Colors.black),
-        ),
+        title: const Text("Daftar Harga"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
@@ -141,18 +136,21 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
                     /// UNIT
                     DropdownButtonFormField<String>(
                       value: unit,
+                      dropdownColor: Colors.white,
                       items: PRODUCT_TYPE
                           .map(
                             (u) => DropdownMenuItem(
                               value: u,
-                              child: Text(u),
+                              child: Text(
+                                u,
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             ),
                           )
                           .toList(),
                       onChanged: (v) => unit = v,
                       decoration: _decoration("Unit"),
-                      validator: (v) =>
-                          v == null ? "Unit wajib dipilih" : null,
+                      validator: (v) => v == null ? "Unit wajib dipilih" : null,
                     ),
 
                     const SizedBox(height: 14),
@@ -160,11 +158,16 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
                     /// TYPE PRICE
                     DropdownButtonFormField<String>(
                       value: typePrice,
+                      dropdownColor: Colors.white,
+
                       items: PRICE_TYPE
                           .map(
                             (t) => DropdownMenuItem(
                               value: t,
-                              child: Text(priceTypeLabel(t)),
+                              child: Text(
+                                priceTypeLabel(t),
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             ),
                           )
                           .toList(),
@@ -181,6 +184,7 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
                       controller: qtyController,
                       keyboardType: TextInputType.number,
                       decoration: _decoration("Quantity"),
+                      style: const TextStyle(color: Colors.black),
                       validator: (v) =>
                           v == null || v.isEmpty ? "Qty wajib diisi" : null,
                     ),
@@ -192,6 +196,7 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
                       controller: priceController,
                       keyboardType: TextInputType.number,
                       decoration: _decoration("Harga"),
+                      style: const TextStyle(color: Colors.black),
                       validator: (v) =>
                           v == null || v.isEmpty ? "Harga wajib diisi" : null,
                     ),

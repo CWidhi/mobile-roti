@@ -5,10 +5,7 @@ import 'package:frontend_roti/constants/helper.dart';
 class CreateProductPriceScreen extends StatefulWidget {
   final int productId;
 
-  const CreateProductPriceScreen({
-    super.key,
-    required this.productId,
-  });
+  const CreateProductPriceScreen({super.key, required this.productId});
 
   @override
   State<CreateProductPriceScreen> createState() =>
@@ -31,6 +28,7 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
   InputDecoration _decoration(String hint) {
     return InputDecoration(
       hintText: hint,
+      hintStyle: const TextStyle(color: Colors.black),
       filled: true,
       fillColor: bgSoft,
       border: OutlineInputBorder(
@@ -81,12 +79,12 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgSoft,
+      backgroundColor: const Color(0xFFF5F6F9),
       appBar: AppBar(
-        title: const Text(
-          "Tambah Harga",
-          style: TextStyle(color: Colors.black),
-        ),
+        title: const Text("Tambah Harga"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -97,36 +95,40 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
             children: [
               /// UNIT
               DropdownButtonFormField<String>(
+                dropdownColor: Colors.white,
                 value: unit,
+                hint: const Text(
+                  "Unit",
+                  style: TextStyle(color: Colors.black),
+                ),
+                decoration: _decoration(""),
                 items: PRODUCT_TYPE
-                    .map(
-                      (u) => DropdownMenuItem(
-                        value: u,
-                        child: Text(u),
-                      ),
-                    )
+                    .map((u) => DropdownMenuItem(value: u, child: Text(u, style: const TextStyle(color: Colors.black))))
                     .toList(),
                 onChanged: (v) => unit = v,
-                decoration: _decoration("Unit"),
                 validator: (v) => v == null ? "Unit wajib dipilih" : null,
               ),
 
               const SizedBox(height: 14),
 
               /// TYPE PRICE
-              /// TYPE PRICE
               DropdownButtonFormField<String>(
+                dropdownColor: Colors.white,
                 value: typePrice,
+                hint: const Text(
+                  "Tipe Harga",
+                  style: TextStyle(color: Colors.black),
+                ),
+                decoration: _decoration(""),
                 items: PRICE_TYPE
                     .map(
                       (e) => DropdownMenuItem(
                         value: e,
-                        child: Text(priceTypeLabel(e)), // 👈 label rapi
+                        child: Text(priceTypeLabel(e), style: const TextStyle(color: Colors.black)), // 👈 label rapi
                       ),
                     )
                     .toList(),
                 onChanged: (v) => setState(() => typePrice = v),
-                decoration: _decoration("Tipe Harga"),
                 validator: (v) => v == null ? "Tipe harga wajib dipilih" : null,
               ),
 
@@ -137,6 +139,7 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
                 controller: qtyController,
                 keyboardType: TextInputType.number,
                 decoration: _decoration("Quantity"),
+                style: const TextStyle(color: Colors.black),
                 validator: (v) =>
                     v == null || v.isEmpty ? "Qty wajib diisi" : null,
               ),
@@ -147,6 +150,7 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
               TextFormField(
                 controller: priceController,
                 keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.black),
                 decoration: _decoration("Harga"),
                 validator: (v) =>
                     v == null || v.isEmpty ? "Harga wajib diisi" : null,

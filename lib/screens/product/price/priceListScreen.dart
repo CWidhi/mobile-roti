@@ -165,6 +165,7 @@ class _PriceCard extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 6),
