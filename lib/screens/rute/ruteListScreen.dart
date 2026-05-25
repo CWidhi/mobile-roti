@@ -61,6 +61,9 @@ class _RouteLineListScreenState extends State<RouteLineListScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Tracking Line"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       floatingActionButton: isAdmin
           ? FloatingActionButton(
@@ -72,8 +75,9 @@ class _RouteLineListScreenState extends State<RouteLineListScreen> {
                   context: context,
                   isScrollControlled: true,
                   shape: const RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
                   ),
                   builder: (_) => const RouteLineFormModal(),
                 );
@@ -180,7 +184,8 @@ class _RouteCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => RouteLineDetailScreen(route: route, isAdmin: isAdmin),
+            builder: (_) =>
+                RouteLineDetailScreen(route: route, isAdmin: isAdmin),
           ),
         );
       },
@@ -209,6 +214,7 @@ class _RouteCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -231,8 +237,9 @@ class _RouteCard extends StatelessWidget {
                         context: context,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20)),
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
                         ),
                         builder: (_) => RouteLineFormModal(route: route),
                       );
@@ -257,22 +264,20 @@ class _RouteCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title: const Text("Hapus Rute"),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text("Hapus Rute", style: TextStyle(color: Colors.black)),
         content: const Text(
           "Rute akan dihapus permanen.\nTindakan ini tidak dapat dibatalkan.",
+          style: TextStyle(color: Colors.black),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Batal"),
+            child: const Text("Batal", style: TextStyle(color: Colors.black)),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
             onPressed: () async {
               Navigator.pop(context);
 
@@ -299,7 +304,7 @@ class _RouteCard extends StatelessWidget {
                 );
               }
             },
-            child: const Text("Hapus"),
+            child: const Text("Hapus", style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

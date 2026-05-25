@@ -35,8 +35,12 @@ class _RouteLineDetailScreenState extends State<RouteLineDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.route.name),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
 
       /// FLOATING ADD STORE (ADMIN ONLY)
@@ -96,6 +100,7 @@ class _RouteLineDetailScreenState extends State<RouteLineDetailScreen> {
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -184,6 +189,7 @@ class _StoreCard extends StatelessWidget {
                       store.name ?? "-",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                   ),

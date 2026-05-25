@@ -4,10 +4,7 @@ import 'package:frontend_roti/services/rute/storeService.dart';
 class CreateStoreScreen extends StatefulWidget {
   final int routeId;
 
-  const CreateStoreScreen({
-    Key? key,
-    required this.routeId,
-  }) : super(key: key);
+  const CreateStoreScreen({Key? key, required this.routeId}) : super(key: key);
 
   @override
   State<CreateStoreScreen> createState() => _CreateStoreScreenState();
@@ -68,6 +65,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   InputDecoration _input(String hint) {
     return InputDecoration(
       hintText: hint,
+      hintStyle: const TextStyle(color: Colors.black),
       filled: true,
       fillColor: const Color(0xFFF5F6F9),
       border: OutlineInputBorder(
@@ -80,8 +78,12 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Tambah Store"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -90,45 +92,60 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
           child: Column(
             children: [
               TextFormField(
+                style: const TextStyle(color: Colors.black),
                 controller: nameController,
                 decoration: _input("Nama Store"),
-                validator: (v) =>
-                    v == null || v.isEmpty ? "Wajib diisi" : null,
+                validator: (v) => v == null || v.isEmpty ? "Wajib diisi" : null,
               ),
               const SizedBox(height: 12),
 
               TextFormField(
+                style: const TextStyle(color: Colors.black),
                 controller: addressController,
                 decoration: _input("Alamat"),
-                validator: (v) =>
-                    v == null || v.isEmpty ? "Wajib diisi" : null,
+                validator: (v) => v == null || v.isEmpty ? "Wajib diisi" : null,
               ),
               const SizedBox(height: 12),
 
               TextFormField(
+                style: const TextStyle(color: Colors.black),
                 controller: phoneController,
                 decoration: _input("No. Telepon"),
                 keyboardType: TextInputType.phone,
-                validator: (v) =>
-                    v == null || v.isEmpty ? "Wajib diisi" : null,
+                validator: (v) => v == null || v.isEmpty ? "Wajib diisi" : null,
               ),
               const SizedBox(height: 12),
 
               TextFormField(
                 controller: coordinateController,
+                style: const TextStyle(color: Colors.black),
                 decoration: _input("Koordinat"),
-                validator: (v) =>
-                    v == null || v.isEmpty ? "Wajib diisi" : null,
+                validator: (v) => v == null || v.isEmpty ? "Wajib diisi" : null,
               ),
               const SizedBox(height: 12),
 
               DropdownButtonFormField<String>(
                 value: storeType,
-                decoration: _input("Tipe Store"),
+
+                dropdownColor: Colors.white,
+
+                decoration: _input(
+                  "Tipe Store",
+                ).copyWith(filled: true, fillColor: Colors.white),
+
+                style: const TextStyle(color: Colors.black),
+
                 items: const [
-                  DropdownMenuItem(value: "Toko", child: Text("Toko")),
-                  DropdownMenuItem(value: "Pasar", child: Text("Pasar")),
+                  DropdownMenuItem(
+                    value: "Toko",
+                    child: Text("Toko", style: TextStyle(color: Colors.black)),
+                  ),
+                  DropdownMenuItem(
+                    value: "Pasar",
+                    child: Text("Pasar", style: TextStyle(color: Colors.black)),
+                  ),
                 ],
+
                 onChanged: (v) => setState(() => storeType = v!),
               ),
 
@@ -147,7 +164,10 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                   onPressed: isLoading ? null : _submit,
                   child: isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text("Simpan"),
+                      : const Text(
+                          "Simpan",
+                          style: TextStyle(color: Colors.white),
+                        ),
                 ),
               ),
             ],

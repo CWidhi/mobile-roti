@@ -75,8 +75,12 @@ class _UpdateStoreScreenState extends State<UpdateStoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Update Store"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -84,10 +88,7 @@ class _UpdateStoreScreenState extends State<UpdateStoreScreen> {
           key: _formKey,
           child: Column(
             children: [
-              _InputCard(
-                label: "Nama Store",
-                controller: _nameCtrl,
-              ),
+              _InputCard(label: "Nama Store", controller: _nameCtrl),
               _InputCard(
                 label: "Alamat",
                 controller: _addressCtrl,
@@ -98,29 +99,48 @@ class _UpdateStoreScreenState extends State<UpdateStoreScreen> {
                 controller: _phoneCtrl,
                 keyboardType: TextInputType.phone,
               ),
-              _InputCard(
-                label: "Koordinat",
-                controller: _coordinateCtrl,
-              ),
+              _InputCard(label: "Koordinat", controller: _coordinateCtrl),
 
               /// STORE TYPE
               Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF5F6F9),
+                  color: Colors.white, // background putih
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: DropdownButtonFormField<String>(
                   value: _storeType,
+
+                  dropdownColor: Colors.white,
+
+                  style: const TextStyle(
+                    color: Colors.black, // text selected hitam
+                  ),
+
                   decoration: const InputDecoration(
                     labelText: "Tipe Store",
+                    labelStyle: TextStyle(color: Colors.black),
                     border: InputBorder.none,
                   ),
+
                   items: const [
-                    DropdownMenuItem(value: "Toko", child: Text("Toko")),
-                    DropdownMenuItem(value: "Agen", child: Text("Agen")),
+                    DropdownMenuItem(
+                      value: "Toko",
+                      child: Text(
+                        "Toko",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: "Pasar",
+                      child: Text(
+                        "Pasar",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
                   ],
+
                   onChanged: (val) {
                     setState(() => _storeType = val!);
                   },
@@ -142,7 +162,10 @@ class _UpdateStoreScreenState extends State<UpdateStoreScreen> {
                   ),
                   child: _loading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text("Simpan Perubahan", style: TextStyle(color: Colors.white),),
+                      : const Text(
+                          "Simpan",
+                          style: TextStyle(color: Colors.white),
+                        ),
                 ),
               ),
             ],
@@ -176,14 +199,12 @@ class _InputCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: TextFormField(
+        style: const TextStyle(color: Colors.black),
         controller: controller,
         maxLines: maxLines,
         keyboardType: keyboardType,
         validator: (v) => v == null || v.isEmpty ? "Wajib diisi" : null,
-        decoration: InputDecoration(
-          labelText: label,
-          border: InputBorder.none,
-        ),
+        decoration: InputDecoration(labelText: label, border: InputBorder.none),
       ),
     );
   }
