@@ -133,6 +133,7 @@ class _StockMovementScreenState extends State<StockMovementScreen> {
     final dateFormat = DateFormat('dd MMM yyyy');
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Stock Movement"),
         backgroundColor: Colors.white,
@@ -239,6 +240,7 @@ class _StockMovementScreenState extends State<StockMovementScreen> {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
+              color: Colors.black,
             ),
           ),
 

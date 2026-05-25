@@ -61,6 +61,7 @@ class _CashflowScreenState extends State<CashflowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Cashflow Report"),
         backgroundColor: Colors.white,
@@ -145,7 +146,7 @@ class _CashflowScreenState extends State<CashflowScreen> {
           if (weeklyData != null && weeklyData!.daily.isNotEmpty) ...[
             const Text(
               "Cashflow 7 Hari Terakhir",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             const SizedBox(height: 16),
             _weeklyChart(),
@@ -227,7 +228,7 @@ class _CashflowScreenState extends State<CashflowScreen> {
                         DateFormat(
                           'dd/MM',
                         ).format(weeklyData!.daily[index].date),
-                        style: const TextStyle(fontSize: 9),
+                        style: const TextStyle(fontSize: 9, color: Colors.black),
                       ),
                     );
                   }
@@ -271,7 +272,7 @@ class _CashflowScreenState extends State<CashflowScreen> {
         ),
         child: Text(
           date != null ? DateFormat('dd MMM yyyy').format(date) : label,
-          style: const TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12, color: Colors.black,),
         ),
       ),
     );
@@ -287,7 +288,7 @@ class _CashflowScreenState extends State<CashflowScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
           Text(
             value,
             style: TextStyle(fontWeight: FontWeight.bold, color: color),
