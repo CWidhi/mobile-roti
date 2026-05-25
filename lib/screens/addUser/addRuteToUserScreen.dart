@@ -80,10 +80,7 @@ class _RuteAddUserScreenState extends State<RuteAddUserScreen> {
 
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text(msg),
-      ),
+      SnackBar(backgroundColor: Colors.redAccent, content: Text(msg)),
     );
   }
 
@@ -92,6 +89,7 @@ class _RuteAddUserScreenState extends State<RuteAddUserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Tambah User ke Rute"),
         backgroundColor: Colors.white,
@@ -175,7 +173,7 @@ class _RuteAddUserScreenState extends State<RuteAddUserScreen> {
 
 /// ================= HELPERS =================
 
-const _labelStyle = TextStyle(fontWeight: FontWeight.w600);
+const _labelStyle = TextStyle(fontWeight: FontWeight.w600, color: Colors.black);
 
 Widget _dropdown<T>({
   required T? value,
@@ -192,7 +190,10 @@ Widget _dropdown<T>({
     child: DropdownButtonHideUnderline(
       child: DropdownButton<T>(
         value: value,
-        hint: Text(hint),
+        dropdownColor: Colors.white,
+        hint: const Text("Pilih", style: TextStyle(color: Colors.black)),
+        style: const TextStyle(color: Colors.black),
+        iconEnabledColor: Colors.black,
         isExpanded: true,
         items: items,
         onChanged: onChanged,
@@ -202,16 +203,16 @@ Widget _dropdown<T>({
 }
 
 Widget _loadingBox() => Container(
-      height: 48,
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F6F9),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const SizedBox(
-        height: 18,
-        width: 18,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
-    );
+  height: 48,
+  alignment: Alignment.centerLeft,
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  decoration: BoxDecoration(
+    color: const Color(0xFFF5F6F9),
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: const SizedBox(
+    height: 18,
+    width: 18,
+    child: CircularProgressIndicator(strokeWidth: 2),
+  ),
+);

@@ -45,7 +45,8 @@ class _UsersScreenState extends State<UsersScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("Users Data"),
+        foregroundColor: Colors.black,
+        title: const Text("Users Data", style: TextStyle(color: Colors.black)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -148,6 +149,7 @@ class _UserCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 4),

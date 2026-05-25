@@ -15,7 +15,8 @@ class AccountScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("My Account"),
+        foregroundColor: Colors.black,
+        title: const Text("My Account", style: TextStyle(color: Colors.black)),
       ),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: UserService.getMe(),
@@ -112,7 +113,7 @@ class _AccountField extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            color: Color(0xFF757575),
+            color: Colors.black,
             fontSize: 14,
           ),
         ),
@@ -129,6 +130,7 @@ class _AccountField extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
+              color: Colors.black,
             ),
           ),
         ),
