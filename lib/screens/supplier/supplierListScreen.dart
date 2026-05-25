@@ -50,7 +50,8 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
           .map((e) => Supplier.fromJson(e))
           .toList();
       setState(() {
-        if (url == null) suppliers.clear(); // kalau search atau initial load, clear dulu
+        if (url == null)
+          suppliers.clear(); // kalau search atau initial load, clear dulu
         suppliers.addAll(newSuppliers);
       });
     } catch (e) {
@@ -87,6 +88,9 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Supplier"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: null,
@@ -137,8 +141,9 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) =>
-                                      SupplierDetailScreen(supplier: supplier)),
+                                builder: (_) =>
+                                    SupplierDetailScreen(supplier: supplier),
+                              ),
                             ).then((_) => _refresh());
                           },
                           child: _supplierCard(supplier),
@@ -174,10 +179,7 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
               color: const Color(0xFFFFECDF),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(
-              Icons.local_shipping,
-              color: Color(0xFFFF7643),
-            ),
+            child: const Icon(Icons.local_shipping, color: Color(0xFFFF7643)),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -189,6 +191,7 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 4),

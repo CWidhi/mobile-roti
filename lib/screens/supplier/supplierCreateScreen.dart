@@ -40,9 +40,9 @@ class _AddSupplierScreenState extends State<AddSupplierScreen> {
       if (!mounted) return;
       Navigator.pop(context, true);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       setState(() => isLoading = false);
     }
@@ -54,6 +54,9 @@ class _AddSupplierScreenState extends State<AddSupplierScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Tambah Supplier"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -126,12 +129,7 @@ class _AddSupplierScreenState extends State<AddSupplierScreen> {
   Widget _label(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      child: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
     );
   }
 
@@ -147,6 +145,7 @@ class _AddSupplierScreenState extends State<AddSupplierScreen> {
       maxLines: maxLines,
       keyboardType: keyboardType,
       validator: validator,
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         hintText: hint,
         filled: true,

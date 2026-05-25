@@ -5,10 +5,7 @@ import 'package:frontend_roti/screens/supplier/supplierUpdateScreen.dart';
 class SupplierDetailScreen extends StatelessWidget {
   final Supplier supplier;
 
-  const SupplierDetailScreen({
-    super.key,
-    required this.supplier,
-  });
+  const SupplierDetailScreen({super.key, required this.supplier});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +13,9 @@ class SupplierDetailScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Detail Supplier"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -41,10 +41,7 @@ class SupplierDetailScreen extends StatelessWidget {
             /// NAME
             Text(
               supplier.name,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.black),
             ),
 
             const SizedBox(height: 24),
@@ -72,9 +69,10 @@ class SupplierDetailScreen extends StatelessWidget {
                 label: const Text(
                   "Update Supplier",
                   style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF7643),
@@ -128,10 +126,7 @@ class SupplierDetailScreen extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -139,6 +134,7 @@ class SupplierDetailScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
+                    color: Colors.black,
                   ),
                 ),
               ],

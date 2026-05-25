@@ -5,10 +5,7 @@ import 'package:frontend_roti/services/supplier/supplierService.dart';
 class EditSupplierScreen extends StatefulWidget {
   final Supplier supplier;
 
-  const EditSupplierScreen({
-    super.key,
-    required this.supplier,
-  });
+  const EditSupplierScreen({super.key, required this.supplier});
 
   @override
   State<EditSupplierScreen> createState() => _EditSupplierScreenState();
@@ -54,11 +51,10 @@ class _EditSupplierScreenState extends State<EditSupplierScreen> {
 
       if (!mounted) return;
       Navigator.pop(context, true);
-
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       setState(() => isLoading = false);
     }
@@ -70,6 +66,9 @@ class _EditSupplierScreenState extends State<EditSupplierScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Edit Supplier"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: SafeArea(
         child: Padding(
@@ -78,16 +77,10 @@ class _EditSupplierScreenState extends State<EditSupplierScreen> {
             key: _formKey,
             child: Column(
               children: [
-                _input(
-                  label: "Nama Supplier",
-                  controller: nameController,
-                ),
+                _input(label: "Nama Supplier", controller: nameController),
                 const SizedBox(height: 16),
 
-                _input(
-                  label: "Alamat",
-                  controller: addressController,
-                ),
+                _input(label: "Alamat", controller: addressController),
                 const SizedBox(height: 16),
 
                 _input(
@@ -109,9 +102,7 @@ class _EditSupplierScreenState extends State<EditSupplierScreen> {
                       ),
                     ),
                     child: isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                        ? const CircularProgressIndicator(color: Colors.white)
                         : const Text(
                             "Simpan Supplier",
                             style: TextStyle(
@@ -140,16 +131,14 @@ class _EditSupplierScreenState extends State<EditSupplierScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w500),
-        ),
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black)),
         const SizedBox(height: 6),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           validator: (v) =>
               v == null || v.isEmpty ? "$label wajib diisi" : null,
+          style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color(0xFFF5F6F9),
