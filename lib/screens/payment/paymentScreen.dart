@@ -186,6 +186,7 @@ class _PaymentListScreenState extends State<PaymentListScreen> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
                 ),
                 Icon(
@@ -224,7 +225,7 @@ class _PaymentListScreenState extends State<PaymentListScreen> {
               children: [
                 const Text(
                   "Total",
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                  style: TextStyle(fontWeight: FontWeight.w500, color: Colors.grey),
                 ),
                 Text(
                   currency.format(payment.totalOrder),

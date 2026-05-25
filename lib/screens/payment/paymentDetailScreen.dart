@@ -155,6 +155,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -203,7 +204,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: const TextStyle(color: Colors.grey)),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
         ],
       ),
     );
@@ -239,7 +240,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
         children: [
           Text(
             item.productName,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black),
           ),
           const SizedBox(height: 6),
           Row(
@@ -251,9 +252,14 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
               ),
               Text(
                 currency.format(item.total),
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
               ),
             ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            currency.format(item.price),
+            style: const TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 6),
           Container(
@@ -273,6 +279,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
               ),
             ),
           ),
+          
         ],
       ),
     );
@@ -285,9 +292,9 @@ class _BottomBar extends StatelessWidget {
   final bool isAdmin;
 
   const _BottomBar({
-    required this.isAdmin, 
-    required this.payment, 
-    required this.onRefresh
+    required this.isAdmin,
+    required this.payment,
+    required this.onRefresh,
   });
 
   static const primaryColor = Color(0xFFFF7643);
@@ -374,7 +381,8 @@ class _BottomBar extends StatelessWidget {
             ],
 
             /// ================= REPAYMENT (CICILAN) =================
-            if (isAdmin && payment.totalPaid > 0 &&
+            if (isAdmin &&
+                payment.totalPaid > 0 &&
                 payment.remainingAmount < payment.totalOrder) ...[
               const SizedBox(height: 12),
               OutlinedButton.icon(
@@ -729,6 +737,7 @@ void showAddItemModal({
 
   showModalBottomSheet(
     context: context,
+    backgroundColor: Colors.white,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -783,7 +792,11 @@ void showAddItemModal({
 
                 const Text(
                   "Tambah Item",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
 
                 const SizedBox(height: 16),
@@ -792,6 +805,11 @@ void showAddItemModal({
                 isLoadingProduct
                     ? const Center(child: CircularProgressIndicator())
                     : DropdownButtonFormField<Product>(
+                        dropdownColor: Colors.white,
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: Colors.black,
+                        ),
                         value: products.contains(selectedProduct)
                             ? selectedProduct
                             : null,
@@ -799,7 +817,10 @@ void showAddItemModal({
                             .map(
                               (p) => DropdownMenuItem(
                                 value: p,
-                                child: Text(p.name),
+                                child: Text(
+                                  p.name,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
                               ),
                             )
                             .toList(),
@@ -822,6 +843,7 @@ void showAddItemModal({
                 TextField(
                   controller: qtyController,
                   keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: "Qty",
                     border: OutlineInputBorder(
@@ -834,11 +856,24 @@ void showAddItemModal({
 
                 /// ================= UNIT =================
                 DropdownButtonFormField<String>(
+                  dropdownColor: Colors.white,
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                   value: PRODUCT_TYPE.contains(selectedUnit)
                       ? selectedUnit
                       : null,
                   items: PRODUCT_TYPE
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      )
                       .toList(),
                   onChanged: (val) => setState(() => selectedUnit = val!),
                   decoration: InputDecoration(
@@ -853,9 +888,22 @@ void showAddItemModal({
 
                 /// ================= REFUND TYPE =================
                 DropdownButtonFormField<String>(
+                  dropdownColor: Colors.white,
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                   value: ITEM_TYPE.contains(refundType) ? refundType : null,
                   items: ITEM_TYPE
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      )
                       .toList(),
                   onChanged: (val) => setState(() => refundType = val!),
                   decoration: InputDecoration(
@@ -870,9 +918,22 @@ void showAddItemModal({
 
                 /// ================= STORE =================
                 DropdownButtonFormField<String>(
+                  dropdownColor: Colors.white,
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                   value: STORE_TYPE.contains(store) ? store : null,
                   items: STORE_TYPE
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      )
                       .toList(),
                   onChanged: (val) => setState(() => store = val!),
                   decoration: InputDecoration(
