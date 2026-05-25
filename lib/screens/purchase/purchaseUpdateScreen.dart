@@ -122,6 +122,7 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
                   : _dropdown<int>(
                       context: context,
                       value: selectedSupplier,
+
                       hint: "Pilih Supplier",
                       items: suppliers
                           .map(
@@ -426,6 +427,10 @@ Widget _dropdown<T>({
           style: const TextStyle(color: Colors.black87),
           value: value,
           hint: const Text("Pilih", style: TextStyle(color: Colors.black)),
+          icon: const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: Colors.black,
+          ),
           isExpanded: true,
           menuMaxHeight: 300,
           items: items,

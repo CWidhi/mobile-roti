@@ -97,6 +97,10 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
               DropdownButtonFormField<String>(
                 dropdownColor: Colors.white,
                 value: unit,
+                icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                 hint: const Text(
                   "Unit",
                   style: TextStyle(color: Colors.black),
@@ -115,6 +119,10 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
               DropdownButtonFormField<String>(
                 dropdownColor: Colors.white,
                 value: typePrice,
+                icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                 hint: const Text(
                   "Tipe Harga",
                   style: TextStyle(color: Colors.black),

@@ -137,6 +137,10 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
                     DropdownButtonFormField<String>(
                       value: unit,
                       dropdownColor: Colors.white,
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: Colors.black,
+                      ),
                       items: PRODUCT_TYPE
                           .map(
                             (u) => DropdownMenuItem(
@@ -159,7 +163,10 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
                     DropdownButtonFormField<String>(
                       value: typePrice,
                       dropdownColor: Colors.white,
-
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: Colors.black,
+                      ),
                       items: PRICE_TYPE
                           .map(
                             (t) => DropdownMenuItem(

@@ -128,9 +128,7 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
                 child: IgnorePointer(
                   child: TextField(
                     readOnly: true,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
+                    style: const TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       hintText: "Pilih tanggal",
                       hintStyle: TextStyle(
@@ -275,7 +273,7 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
           loadingProduct
               ? _loadingBox()
               : _dropdown<int>(
-                 context: context,
+                  context: context,
                   value: item.product,
                   hint: "Pilih Product",
                   items: products
@@ -383,25 +381,22 @@ Widget _dropdown<T>({
     ),
     child: DropdownButtonHideUnderline(
       child: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.white,
-        ),
+        data: Theme.of(context).copyWith(canvasColor: Colors.white),
         child: DropdownButton<T>(
           value: value,
           hint: Text(
             hint,
-            style: const TextStyle(
-              color: Color.fromARGB(255, 77, 76, 76),
-            ),
+            style: const TextStyle(color: Color.fromARGB(255, 77, 76, 76)),
           ),
 
           /// WARNA TEXT
-          style: const TextStyle(
-            color: Colors.black87,
-          ),
+          style: const TextStyle(color: Colors.black87),
 
           /// WARNA ICON PANAH
-          iconEnabledColor: Colors.black54,
+          icon: const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: Colors.black,
+          ),
 
           isExpanded: true,
           menuMaxHeight: 300,

@@ -197,6 +197,10 @@ Widget _dropdown<T>({
         isExpanded: true,
         items: items,
         onChanged: onChanged,
+        icon: const Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: Colors.black,
+        ),
       ),
     ),
   );
