@@ -102,9 +102,9 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
   }
 
   void _error(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: Colors.red, content: Text(msg)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text(msg)));
   }
 
   /// ================= UI =================
@@ -113,6 +113,7 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
     final dateFormat = DateFormat("dd MMM yyyy");
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Create Order"),
         backgroundColor: Colors.white,
@@ -164,8 +165,11 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              title: Text(dateFormat.format(orderDate)),
-              trailing: const Icon(Icons.calendar_today),
+              title: Text(
+                dateFormat.format(orderDate),
+                style: const TextStyle(color: Colors.black),
+              ),
+              trailing: const Icon(Icons.calendar_today, color: Colors.black),
               onTap: () async {
                 final picked = await showDatePicker(
                   context: context,
@@ -190,8 +194,11 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
 
             TextButton.icon(
               onPressed: () => setState(() => items.add(OrderFormItem())),
-              icon: const Icon(Icons.add),
-              label: const Text("Tambah Item"),
+              icon: const Icon(Icons.add, color: Colors.indigo),
+              label: const Text(
+                "Tambah Item",
+                style: TextStyle(color: Colors.indigo),
+              ),
             ),
 
             const SizedBox(height: 24),
@@ -234,7 +241,10 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
             children: [
               Text(
                 "Item ${index + 1}",
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
               ),
               if (items.length > 1)
                 IconButton(
@@ -273,7 +283,11 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
           /// QTY
           TextField(
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: "Qty"),
+            style: const TextStyle(color: Colors.black),
+            decoration: const InputDecoration(
+              labelText: "Qty",
+              hintStyle: TextStyle(color: Colors.black),
+            ),
             onChanged: (v) => item.qty = int.tryParse(v) ?? 1,
           ),
 
@@ -282,7 +296,15 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
             contentPadding: EdgeInsets.zero,
             value: item.marketStore,
             onChanged: (v) => setState(() => item.marketStore = v),
-            title: const Text("Market Store"),
+            title: const Text(
+              "Market Store",
+              style: TextStyle(color: Colors.black),
+            ),
+            activeColor: Colors.white,
+            activeTrackColor: const Color(0xFFFF7643),
+
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: Colors.grey.shade400,
           ),
         ],
       ),
@@ -301,9 +323,12 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
 
 /// ================= HELPERS =================
 Widget _label(String text) => Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: Text(text, style: const TextStyle(fontWeight: FontWeight.w600)),
-    );
+  padding: const EdgeInsets.only(bottom: 6),
+  child: Text(
+    text,
+    style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
+  ),
+);
 
 Widget _dropdown<T>({
   required T? value,
@@ -320,14 +345,22 @@ Widget _dropdown<T>({
     ),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<T>(
+        dropdownColor: Colors.white,
         isExpanded: true,
         value: value,
-        hint: Text(hint),
+        hint: Text(hint, style: const TextStyle(color: Colors.black)),
+        icon: const Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: Colors.black,
+        ),
         items: items
             .map(
               (e) => DropdownMenuItem(
                 value: e,
-                child: Text(label(e)),
+                child: Text(
+                  label(e),
+                  style: const TextStyle(color: Colors.black),
+                ),
               ),
             )
             .toList(),

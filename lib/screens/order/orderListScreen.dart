@@ -116,6 +116,7 @@ class _OrderPickingListScreenState extends State<OrderPickingListScreen> {
     final dateFormat = DateFormat('dd MMM yyyy');
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Order Picking"),
         backgroundColor: Colors.white,
@@ -270,6 +271,7 @@ class _OrderPickingListScreenState extends State<OrderPickingListScreen> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
                 ),
                 _statusBadge(order.confirmations),

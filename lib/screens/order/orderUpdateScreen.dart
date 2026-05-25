@@ -152,6 +152,7 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
     final dateFormat = DateFormat("dd MMM yyyy");
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Update Order"),
         backgroundColor: Colors.white,
@@ -170,8 +171,14 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
                     title: "Tanggal Order",
                     child: ListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: Text(dateFormat.format(selectedDate)),
-                      trailing: const Icon(Icons.calendar_today),
+                      title: Text(
+                        dateFormat.format(selectedDate),
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                      trailing: const Icon(
+                        Icons.calendar_today,
+                        color: Colors.black,
+                      ),
                       onTap: () async {
                         final picked = await showDatePicker(
                           context: context,
@@ -179,7 +186,8 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
                           firstDate: DateTime(2024),
                           lastDate: DateTime(2030),
                         );
-                        if (picked != null) setState(() => selectedDate = picked);
+                        if (picked != null)
+                          setState(() => selectedDate = picked);
                       },
                     ),
                   ),
@@ -194,8 +202,11 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
                         const SizedBox(height: 12),
                         OutlinedButton.icon(
                           onPressed: _addItem,
-                          icon: const Icon(Icons.add),
-                          label: const Text("Tambah Item"),
+                          icon: const Icon(Icons.add, color: Colors.indigo),
+                          label: const Text(
+                            "Tambah Item",
+                            style: TextStyle(color: Colors.indigo),
+                          ),
                         ),
                       ],
                     ),
@@ -247,21 +258,30 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
               // PILIH PRODUK
               Expanded(
                 child: DropdownButtonFormField<int>(
+                  dropdownColor: Colors.white,
                   value: item.productId == 0 ? null : item.productId,
                   decoration: const InputDecoration(labelText: "Pilih Produk"),
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                   items: productList
                       .map(
                         (p) => DropdownMenuItem<int>(
                           value: p.id,
-                          child: Text(p.name),
+                          child: Text(
+                            p.name,
+                            style: const TextStyle(color: Colors.black),
+                          ),
                         ),
                       )
                       .toList(),
                   onChanged: (value) {
                     setState(() {
                       item.productId = value!;
-                      item.productName =
-                          productList.firstWhere((p) => p.id == value).name;
+                      item.productName = productList
+                          .firstWhere((p) => p.id == value)
+                          .name;
                     });
                   },
                   validator: (v) => v == null ? "Produk wajib" : null,
@@ -282,6 +302,7 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
               Expanded(
                 child: TextFormField(
                   initialValue: item.qty.toString(),
+                  style: const TextStyle(color: Colors.black),
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(labelText: "Qty"),
                   onChanged: (v) => item.qty = int.tryParse(v) ?? 0,
@@ -293,17 +314,26 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
               Expanded(
                 child: DropdownButtonFormField<String>(
                   value: item.unit,
+                  dropdownColor: Colors.white,
                   decoration: const InputDecoration(labelText: "Unit"),
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                   items: PRODUCT_TYPE
                       .map(
                         (u) => DropdownMenuItem<String>(
                           value: u,
-                          child: Text(u),
+                          child: Text(
+                            u,
+                            style: const TextStyle(color: Colors.black),
+                          ),
                         ),
                       )
                       .toList(),
                   onChanged: (value) => setState(() => item.unit = value!),
-                  validator: (v) => v == null || v.isEmpty ? "Unit wajib" : null,
+                  validator: (v) =>
+                      v == null || v.isEmpty ? "Unit wajib" : null,
                 ),
               ),
             ],
@@ -313,9 +343,17 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
           const SizedBox(height: 8),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text("Market Store"),
+            title: const Text(
+              "Market Store",
+              style: TextStyle(color: Colors.black),
+            ),
             value: item.marketStore,
             onChanged: (v) => setState(() => item.marketStore = v),
+            activeColor: Colors.white,
+            activeTrackColor: const Color(0xFFFF7643),
+
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: Colors.grey.shade400,
           ),
         ],
       ),
@@ -328,7 +366,11 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
         ),
         const SizedBox(height: 8),
         child,

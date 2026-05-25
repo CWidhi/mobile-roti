@@ -129,6 +129,7 @@ class _OrderPickingDetailScreenState extends State<OrderPickingDetailScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -149,7 +150,7 @@ class _OrderPickingDetailScreenState extends State<OrderPickingDetailScreen> {
                                 Text(
                                   "${item.qty} x ${currency.format(item.price)}",
                                   style: const TextStyle(
-                                    color: Colors.grey,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -158,6 +159,7 @@ class _OrderPickingDetailScreenState extends State<OrderPickingDetailScreen> {
                               currency.format(item.total),
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
+                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -208,7 +210,7 @@ class _OrderPickingDetailScreenState extends State<OrderPickingDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: const TextStyle(color: Colors.grey)),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
         ],
       ),
     );
