@@ -11,10 +11,7 @@ import 'package:frontend_roti/models/purchase.dart';
 class PurchaseUpdateScreen extends StatefulWidget {
   final int purchaseId;
 
-  const PurchaseUpdateScreen({
-    super.key,
-    required this.purchaseId,
-  });
+  const PurchaseUpdateScreen({super.key, required this.purchaseId});
 
   @override
   State<PurchaseUpdateScreen> createState() => _PurchaseUpdateScreenState();
@@ -66,8 +63,9 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
 
   Future<void> _loadPurchaseDetail() async {
     try {
-      final Purchase purchase =
-          await PurchaseService.getPurchaseDetail(widget.purchaseId);
+      final Purchase purchase = await PurchaseService.getPurchaseDetail(
+        widget.purchaseId,
+      );
 
       selectedSupplier = purchase.supplier.id;
       purchaseDate = purchase.purchaseDate;
@@ -99,12 +97,11 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
   @override
   Widget build(BuildContext context) {
     if (loadingPurchase) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Update Purchase"),
         backgroundColor: Colors.white,
@@ -123,13 +120,17 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
               loadingSupplier
                   ? _loadingBox()
                   : _dropdown<int>(
+                      context: context,
                       value: selectedSupplier,
                       hint: "Pilih Supplier",
                       items: suppliers
                           .map(
                             (s) => DropdownMenuItem<int>(
                               value: s.id,
-                              child: Text(s.name),
+                              child: Text(
+                                s.name,
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             ),
                           )
                           .toList(),
@@ -157,14 +158,19 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
                 child: IgnorePointer(
                   child: TextField(
                     readOnly: true,
+                    style: const TextStyle(color: Colors.black),
                     controller: TextEditingController(
                       text: purchaseDate == null
                           ? ""
                           : dateFormat.format(purchaseDate!),
                     ),
                     decoration: InputDecoration(
+                      hintStyle: const TextStyle(color: Colors.black),
                       hintText: "Pilih tanggal",
-                      prefixIcon: const Icon(Icons.calendar_today_outlined),
+                      prefixIcon: const Icon(
+                        Icons.calendar_today_outlined,
+                        color: Colors.black,
+                      ),
                       filled: true,
                       fillColor: const Color(0xFFF5F6F9),
                       border: OutlineInputBorder(
@@ -182,9 +188,7 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
               const Text("Items", style: _labelStyle),
               const SizedBox(height: 12),
 
-              ...items.asMap().entries.map(
-                    (e) => _itemCard(e.key, e.value),
-                  ),
+              ...items.asMap().entries.map((e) => _itemCard(e.key, e.value)),
 
               const SizedBox(height: 12),
 
@@ -204,6 +208,7 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
               const Text("Keterangan", style: _labelStyle),
               const SizedBox(height: 6),
               TextField(
+                style: const TextStyle(color: Colors.black),
                 maxLines: 3,
                 controller: TextEditingController(text: description ?? ""),
                 onChanged: (v) => description = v,
@@ -224,6 +229,7 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
               const Text("Cashback", style: _labelStyle),
               const SizedBox(height: 6),
               TextField(
+                style: const TextStyle(color: Colors.black),
                 keyboardType: TextInputType.number,
                 controller: TextEditingController(
                   text: cashback?.toString() ?? "",
@@ -284,11 +290,16 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Item ${index + 1}",
-                  style: const TextStyle(fontWeight: FontWeight.w600)),
+              Text(
+                "Item ${index + 1}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+              ),
               if (items.length > 1)
                 IconButton(
-                  icon: const Icon(Icons.close, size: 18),
+                  icon: const Icon(Icons.close, size: 18, color: Colors.black),
                   onPressed: () => setState(() => items.removeAt(index)),
                 ),
             ],
@@ -297,6 +308,7 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
           loadingProduct
               ? _loadingBox()
               : _dropdown<int>(
+                  context: context,
                   value: item.product,
                   hint: "Pilih Product",
                   items: products
@@ -311,24 +323,22 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
                 ),
           const SizedBox(height: 8),
           _dropdown<String>(
+            context: context,
             value: item.unit,
             hint: "Pilih Unit",
             items: PRODUCT_TYPE
-                .map(
-                  (u) => DropdownMenuItem<String>(
-                    value: u,
-                    child: Text(u),
-                  ),
-                )
+                .map((u) => DropdownMenuItem<String>(value: u, child: Text(u)))
                 .toList(),
             onChanged: (v) => setState(() => item.unit = v),
           ),
           const SizedBox(height: 8),
           TextField(
+            style: const TextStyle(color: Colors.black),
             controller: item.qtyController,
             keyboardType: TextInputType.number,
             onChanged: (v) => item.qty = int.tryParse(v),
             decoration: InputDecoration(
+              hintStyle: const TextStyle(color: Colors.black),
               hintText: "Qty",
               filled: true,
               fillColor: const Color(0xFFF5F6F9),
@@ -368,11 +378,7 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
         description: description,
         cashback: cashback,
         items: items
-            .map((e) => {
-                  "product": e.product,
-                  "unit": e.unit,
-                  "qty": e.qty,
-                })
+            .map((e) => {"product": e.product, "unit": e.unit, "qty": e.qty})
             .toList(),
       );
 
@@ -398,9 +404,10 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
 
 /// ================= HELPERS =================
 
-const _labelStyle = TextStyle(fontWeight: FontWeight.w600);
+const _labelStyle = TextStyle(fontWeight: FontWeight.w600, color: Colors.black);
 
 Widget _dropdown<T>({
+  required BuildContext context,
   required T? value,
   required String hint,
   required List<DropdownMenuItem<T>> items,
@@ -413,13 +420,17 @@ Widget _dropdown<T>({
       borderRadius: BorderRadius.circular(12),
     ),
     child: DropdownButtonHideUnderline(
-      child: DropdownButton<T>(
-        value: value,
-        hint: Text(hint),
-        isExpanded: true,
-        menuMaxHeight: 300,
-        items: items,
-        onChanged: onChanged,
+      child: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.white),
+        child: DropdownButton<T>(
+          style: const TextStyle(color: Colors.black87),
+          value: value,
+          hint: const Text("Pilih", style: TextStyle(color: Colors.black)),
+          isExpanded: true,
+          menuMaxHeight: 300,
+          items: items,
+          onChanged: onChanged,
+        ),
       ),
     ),
   );
@@ -445,19 +456,19 @@ Widget _dropdown<T>({
 //     );
 
 Widget _loadingBox() => Container(
-      height: 48,
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F6F9),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const SizedBox(
-        height: 18,
-        width: 18,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
-    );
+  height: 48,
+  alignment: Alignment.centerLeft,
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  decoration: BoxDecoration(
+    color: const Color(0xFFF5F6F9),
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: const SizedBox(
+    height: 18,
+    width: 18,
+    child: CircularProgressIndicator(strokeWidth: 2),
+  ),
+);
 
 class _PurchaseItemForm {
   int? product;

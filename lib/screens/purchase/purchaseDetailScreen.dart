@@ -36,7 +36,13 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
     final dateFormat = DateFormat('dd MMM yyyy');
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Detail Purchase")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text("Tambah Purchase"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: SizedBox(
@@ -61,7 +67,7 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
                 ),
               );
 
-              // 🔄 reload data setelah edit
+              // reload data setelah edit
               if (result == true) {
                 setState(() {
                   futurePurchase =
@@ -92,7 +98,7 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// 🧾 SUPPLIER
+                  /// SUPPLIER
                   _sectionTitle("Supplier"),
                   _card([
                     _row("Nama", supplier.name),
@@ -102,7 +108,7 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
 
                   const SizedBox(height: 16),
 
-                  /// 📅 INFO
+                  /// INFO
                   _sectionTitle("Informasi Purchase"),
                   _card([
                     _row(
@@ -117,7 +123,7 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
 
                   const SizedBox(height: 16),
 
-                  /// 📦 ITEMS
+                  /// ITEMS
                   _sectionTitle("Item"),
                   ...purchase.items.map(
                     (item) => Container(
@@ -135,6 +141,7 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -160,7 +167,7 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
 
                   const SizedBox(height: 16),
 
-                  /// 📅 INFO
+                  /// INFO
                   _sectionTitle("Keterangan BS"),
                   _card([
                     _row("Deskripsi", purchase.description ?? "-"),
@@ -180,7 +187,7 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
 
                   const SizedBox(height: 20),
 
-                  /// 💰 TOTAL
+                  ///  TOTAL
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -224,7 +231,7 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
       ),
     );
   }
@@ -247,12 +254,12 @@ class _PurchaseDetailScreenState extends State<PurchaseDetailScreen> {
         children: [
           SizedBox(
             width: 90,
-            child: Text(label, style: const TextStyle(color: Colors.grey)),
+            child: Text(label, style: const TextStyle(color: Colors.black)),
           ),
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500, color:Colors.black,),
             ),
           ),
         ],

@@ -108,6 +108,7 @@ class _PurchaseListScreenState extends State<PurchaseListScreen> {
     final dateFormat = DateFormat('dd MMM yyyy');
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Purchase"),
         backgroundColor: Colors.white,
@@ -138,6 +139,7 @@ class _PurchaseListScreenState extends State<PurchaseListScreen> {
               child: TextField(
                 controller: searchController,
                 onChanged: _onSearch,
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   hintText: "Cari supplier / purchase",
                   prefixIcon: const Icon(Icons.search),
@@ -222,6 +224,7 @@ class _PurchaseListScreenState extends State<PurchaseListScreen> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
+                color: Colors.black,
               ),
             ),
 

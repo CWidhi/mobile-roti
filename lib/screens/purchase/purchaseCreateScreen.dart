@@ -71,6 +71,7 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Tambah Purchase"),
         backgroundColor: Colors.white,
@@ -84,11 +85,12 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// SUPPLIER
-              const Text("Supplier", style: _labelStyle),
+              const Text("Supplier", style: TextStyle(color: Colors.black)),
               const SizedBox(height: 6),
               loadingSupplier
                   ? _loadingBox()
                   : _dropdown<int>(
+                      context: context,
                       value: selectedSupplier,
                       hint: "Pilih Supplier",
                       items: suppliers
@@ -105,7 +107,10 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
               const SizedBox(height: 16),
 
               /// DATE
-              const Text("Tanggal Purchase", style: _labelStyle),
+              const Text(
+                "Tanggal Purchase",
+                style: TextStyle(color: Colors.black),
+              ),
               const SizedBox(height: 6),
               InkWell(
                 borderRadius: BorderRadius.circular(12),
@@ -123,8 +128,14 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
                 child: IgnorePointer(
                   child: TextField(
                     readOnly: true,
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
                     decoration: InputDecoration(
                       hintText: "Pilih tanggal",
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 77, 76, 76),
+                      ),
                       prefixIcon: const Icon(Icons.calendar_today_outlined),
                       filled: true,
                       fillColor: const Color(0xFFF5F6F9),
@@ -145,12 +156,10 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
               const SizedBox(height: 24),
 
               /// ITEMS
-              const Text("Items", style: _labelStyle),
+              const Text("Items", style: TextStyle(color: Colors.black)),
               const SizedBox(height: 12),
 
-              ...items.asMap().entries.map(
-                    (e) => _itemCard(e.key, e.value),
-                  ),
+              ...items.asMap().entries.map((e) => _itemCard(e.key, e.value)),
 
               const SizedBox(height: 12),
 
@@ -165,13 +174,14 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
               ),
 
               const SizedBox(height: 24),
-              const Text("Keterangan", style: _labelStyle),
+              const Text("Keterangan", style: TextStyle(color: Colors.black87)),
               const SizedBox(height: 6),
               TextField(
                 maxLines: 3,
                 onChanged: (v) => description = v,
                 decoration: InputDecoration(
                   hintText: "Masukkan keterangan (opsional)",
+                  hintStyle: TextStyle(color: Color.fromARGB(255, 77, 76, 76)),
                   filled: true,
                   fillColor: const Color(0xFFF5F6F9),
                   border: OutlineInputBorder(
@@ -182,13 +192,14 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
               ),
 
               const SizedBox(height: 16),
-              const Text("Cashback", style: _labelStyle),
+              const Text("Cashback", style: TextStyle(color: Colors.black87)),
               const SizedBox(height: 6),
               TextField(
                 keyboardType: TextInputType.number,
                 onChanged: (v) => cashback = int.tryParse(v),
                 decoration: InputDecoration(
                   hintText: "Jumlah cashback",
+                  hintStyle: TextStyle(color: Color.fromARGB(255, 77, 76, 76)),
                   prefixText: "Rp ",
                   filled: true,
                   fillColor: const Color(0xFFF5F6F9),
@@ -213,9 +224,11 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text(
                         "Simpan Purchase",
-                        style: TextStyle(fontSize: 16,
+                        style: TextStyle(
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white),
+                          color: Colors.white,
+                        ),
                       ),
               ),
             ],
@@ -242,11 +255,16 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Item ${index + 1}",
-                  style: const TextStyle(fontWeight: FontWeight.w600)),
+              Text(
+                "Item ${index + 1}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+              ),
               if (items.length > 1)
                 IconButton(
-                  icon: const Icon(Icons.close, size: 18),
+                  icon: const Icon(Icons.close, size: 18, color: Colors.black),
                   onPressed: () => setState(() => items.removeAt(index)),
                 ),
             ],
@@ -257,6 +275,7 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
           loadingProduct
               ? _loadingBox()
               : _dropdown<int>(
+                 context: context,
                   value: item.product,
                   hint: "Pilih Product",
                   items: products
@@ -273,15 +292,11 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
 
           /// UNIT
           _dropdown<String>(
+            context: context,
             value: item.unit,
             hint: "Pilih Unit",
             items: PRODUCT_TYPE
-                .map(
-                  (u) => DropdownMenuItem<String>(
-                    value: u,
-                    child: Text(u),
-                  ),
-                )
+                .map((u) => DropdownMenuItem<String>(value: u, child: Text(u)))
                 .toList(),
             onChanged: (v) => setState(() => item.unit = v),
           ),
@@ -327,11 +342,7 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
         description: description,
         cashback: cashback,
         items: items
-            .map((e) => {
-                  "product": e.product,
-                  "unit": e.unit,
-                  "qty": e.qty,
-                })
+            .map((e) => {"product": e.product, "unit": e.unit, "qty": e.qty})
             .toList(),
       );
 
@@ -357,18 +368,8 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
 
 /// ================= HELPERS =================
 
-const _labelStyle = TextStyle(fontWeight: FontWeight.w600);
-
-// Widget _inputContainer({required Widget child}) => Container(
-//       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-//       decoration: BoxDecoration(
-//         color: const Color(0xFFF5F6F9),
-//         borderRadius: BorderRadius.circular(12),
-//       ),
-//       child: child,
-//     );
-
 Widget _dropdown<T>({
+  required BuildContext context,
   required T? value,
   required String hint,
   required List<DropdownMenuItem<T>> items,
@@ -381,16 +382,32 @@ Widget _dropdown<T>({
       borderRadius: BorderRadius.circular(12),
     ),
     child: DropdownButtonHideUnderline(
-      child: DropdownButton<T>(
-        value: value,
-        hint: Text(hint),
-        isExpanded: true,
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.white,
+        ),
+        child: DropdownButton<T>(
+          value: value,
+          hint: Text(
+            hint,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 77, 76, 76),
+            ),
+          ),
 
-        /// 🔥 INI KUNCINYA
-        menuMaxHeight: 300,
+          /// WARNA TEXT
+          style: const TextStyle(
+            color: Colors.black87,
+          ),
 
-        items: items,
-        onChanged: onChanged,
+          /// WARNA ICON PANAH
+          iconEnabledColor: Colors.black54,
+
+          isExpanded: true,
+          menuMaxHeight: 300,
+          items: items,
+          onChanged: onChanged,
+        ),
       ),
     ),
   );
@@ -400,35 +417,42 @@ Widget _textField({
   required String hint,
   TextInputType keyboardType = TextInputType.text,
   required ValueChanged<String> onChanged,
-}) =>
-    TextField(
-      keyboardType: keyboardType,
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: const Color(0xFFF5F6F9),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
+}) => TextField(
+  keyboardType: keyboardType,
+  onChanged: onChanged,
+
+  /// WARNA TEXT INPUT
+  style: const TextStyle(color: Colors.black87),
+
+  decoration: InputDecoration(
+    hintText: hint,
+
+    /// WARNA PLACEHOLDER
+    hintStyle: TextStyle(color: const Color.fromARGB(255, 77, 76, 76)),
+
+    filled: true,
+    fillColor: const Color(0xFFF5F6F9),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide.none,
+    ),
+  ),
+);
 
 Widget _loadingBox() => Container(
-      height: 48,
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F6F9),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const SizedBox(
-        height: 18,
-        width: 18,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
-    );
+  height: 48,
+  alignment: Alignment.centerLeft,
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  decoration: BoxDecoration(
+    color: const Color(0xFFF5F6F9),
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: const SizedBox(
+    height: 18,
+    width: 18,
+    child: CircularProgressIndicator(strokeWidth: 2),
+  ),
+);
 
 class _PurchaseItemForm {
   int? product;
