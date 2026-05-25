@@ -88,7 +88,9 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Update Product"),
-        backgroundColor: const Color(0xFFFF7643),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -103,9 +105,10 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 children: [
                   const Text("Product Name",
                       style:
-                          TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.black)),
                   const SizedBox(height: 6),
                   TextFormField(
+                    style: const TextStyle(color: Colors.black),
                     controller: _nameController,
                     validator: (v) =>
                         v == null || v.isEmpty ? "Nama wajib diisi" : null,
@@ -121,7 +124,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 children: [
                   const Text("Product Image (Google Drive)",
                       style:
-                          TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.black)),
                   const SizedBox(height: 6),
                   Row(
                     children: [
@@ -145,6 +148,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                       Expanded(
                         flex: 2,
                         child: TextFormField(
+                          style: const TextStyle(color: Colors.black),
                           controller: _imageIdController,
                           validator: (v) => v == null || v.isEmpty
                               ? "Image ID wajib diisi"
@@ -170,7 +174,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                     ),
                   ),
                   child: const Text(
-                    "Update Product",
+                    "Update",
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

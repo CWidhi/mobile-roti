@@ -114,7 +114,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text("All Products")),
+      appBar: AppBar(
+        title: const Text("All Products"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        ),
 
       // FAB hanya untuk admin
       floatingActionButton: isAdmin

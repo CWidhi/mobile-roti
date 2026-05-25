@@ -36,10 +36,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   void _addUnitField() {
-    unitList.add({
-      "unit": null,
-      "multiplier": TextEditingController(),
-    });
+    unitList.add({"unit": null, "multiplier": TextEditingController()});
     setState(() {});
   }
 
@@ -74,22 +71,26 @@ class _AddProductScreenState extends State<AddProductScreen> {
       "image": "$imagePrefix${imageIdController.text}",
       "productType": productType,
       "units": unitList
-          .map((u) => {
-                "unit": u["unit"],
-                "multiplier": int.parse(u["multiplier"].text),
-              })
+          .map(
+            (u) => {
+              "unit": u["unit"],
+              "multiplier": int.parse(u["multiplier"].text),
+            },
+          )
           .toList(),
       "initial_stock": {
         "qty": int.parse(stockQtyController.text),
         "unit": stockUnit,
       },
       "prices": priceList
-          .map((p) => {
-                "unit": p["unit"],
-                "qty": int.parse(p["qty"].text),
-                "price": int.parse(p["price"].text),
-                "typePrice": p["typePrice"],
-              })
+          .map(
+            (p) => {
+              "unit": p["unit"],
+              "qty": int.parse(p["qty"].text),
+              "price": int.parse(p["price"].text),
+              "typePrice": p["typePrice"],
+            },
+          )
           .toList(),
     };
 
@@ -129,7 +130,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text("Add Product")),
+      appBar: AppBar(
+        title: const Text("Add Product"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -145,12 +151,26 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 const SizedBox(height: vSpace),
                 DropdownButtonFormField<String>(
                   value: productType,
+                  dropdownColor: Colors.white,
+                  hint: const Text(
+                    "Tipe Produk",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                   decoration: _decoration(hint: "Pilih tipe produk"),
                   items: PRODUCT_TYPE
-                      .map((e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Text(e),
-                          ))
+                      .map(
+                        (e) => DropdownMenuItem<String>(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      )
                       .toList(),
                   onChanged: (v) => setState(() => productType = v),
                   validator: (v) => v == null ? "Pilih product type" : null,
@@ -171,13 +191,27 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 const SizedBox(height: vSpace),
                 DropdownButtonFormField<String>(
                   value: stockUnit,
+                  dropdownColor: Colors.white,
+                  hint: const Text(
+                    "Unit Stock",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Colors.black,
+                  ),
                   decoration: _decoration(hint: "Pilih unit stock"),
                   items: unitList
                       .where((u) => u["unit"] != null)
-                      .map((u) => DropdownMenuItem<String>(
-                            value: u["unit"],
-                            child: Text(u["unit"]),
-                          ))
+                      .map(
+                        (u) => DropdownMenuItem<String>(
+                          value: u["unit"],
+                          child: Text(
+                            u["unit"],
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      )
                       .toList(),
                   onChanged: (v) => setState(() => stockUnit = v),
                   validator: (v) => v == null ? "Pilih unit stock" : null,
@@ -198,11 +232,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       ),
                     ),
                     child: const Text(
-                      "Save Product",
+                      "Simpan",
                       style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -220,12 +255,18 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
         TextButton.icon(
           onPressed: onAdd,
-          icon: const Icon(Icons.add),
-          label: const Text("Add"),
+          icon: const Icon(Icons.add, color: Colors.indigo),
+          label: const Text("Add", style: TextStyle(color: Colors.indigo)),
         ),
       ],
     );
@@ -238,12 +279,23 @@ class _AddProductScreenState extends State<AddProductScreen> {
           Expanded(
             child: DropdownButtonFormField<String>(
               value: unitList[index]["unit"],
+              dropdownColor: Colors.white,
+              hint: const Text("Unit", style: TextStyle(color: Colors.black)),
+              icon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Colors.black,
+              ),
               decoration: _decoration(hint: "Unit"),
               items: PRODUCT_TYPE
-                  .map((e) => DropdownMenuItem<String>(
-                        value: e,
-                        child: Text(e),
-                      ))
+                  .map(
+                    (e) => DropdownMenuItem<String>(
+                      value: e,
+                      child: Text(
+                        e,
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  )
                   .toList(),
               onChanged: (v) => setState(() => unitList[index]["unit"] = v),
               validator: (v) => v == null ? "Pilih unit" : null,
@@ -269,80 +321,94 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   Widget _priceCard(int index) {
-  return _card(
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// UNIT
-        DropdownButtonFormField<String>(
-          value: priceList[index]["unit"],
-          decoration: _decoration(hint: "Unit"),
-          items: unitList
-              .where((u) => u["unit"] != null)
-              .map((u) => DropdownMenuItem<String>(
+    return _card(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// UNIT
+          DropdownButtonFormField<String>(
+            value: priceList[index]["unit"],
+            dropdownColor: Colors.white,
+            decoration: _decoration(hint: "Unit"),
+            hint: const Text("Unit", style: TextStyle(color: Colors.black)),
+            icon: const Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: Colors.black,
+            ),
+            items: unitList
+                .where((u) => u["unit"] != null)
+                .map(
+                  (u) => DropdownMenuItem<String>(
                     value: u["unit"],
-                    child: Text(u["unit"]),
-                  ))
-              .toList(),
-          onChanged: (v) =>
-              setState(() => priceList[index]["unit"] = v),
-          validator: (v) => v == null ? "Pilih unit" : null,
-        ),
+                    child: Text(
+                      u["unit"],
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+                )
+                .toList(),
+            onChanged: (v) => setState(() => priceList[index]["unit"] = v),
+            validator: (v) => v == null ? "Pilih unit" : null,
+          ),
 
-        const SizedBox(height: vSpace),
+          const SizedBox(height: vSpace),
 
-        /// QTY
-        _input(
-          "Qty",
-          priceList[index]["qty"],
-          keyboardType: TextInputType.number,
-          hint: "Minimal pembelian",
-        ),
+          /// QTY
+          _input(
+            "Qty",
+            priceList[index]["qty"],
+            keyboardType: TextInputType.number,
+            hint: "Minimal pembelian",
+          ),
 
-        const SizedBox(height: vSpace),
+          const SizedBox(height: vSpace),
 
-        /// PRICE
-        _input(
-          "Price",
-          priceList[index]["price"],
-          keyboardType: TextInputType.number,
-          hint: "Harga",
-        ),
+          /// PRICE
+          _input(
+            "Price",
+            priceList[index]["price"],
+            keyboardType: TextInputType.number,
+            hint: "Harga",
+          ),
 
-        const SizedBox(height: vSpace),
+          const SizedBox(height: vSpace),
 
-        /// TYPE PRICE (INI YANG HILANG)
-        DropdownButtonFormField<String>(
-          value: priceList[index]["typePrice"],
-          decoration: _decoration(hint: "Type Price"),
-          items: PRICE_TYPE
-              .map((e) => DropdownMenuItem<String>(
-                    value: e,
-                    child: Text(e),
-                  ))
-              .toList(),
-          onChanged: (v) =>
-              setState(() => priceList[index]["typePrice"] = v),
-          validator: (v) => v == null ? "Pilih type price" : null,
-        ),
+          /// TYPE PRICE (INI YANG HILANG)
+          DropdownButtonFormField<String>(
+            dropdownColor: Colors.white,
+            value: priceList[index]["typePrice"],
+            hint: const Text(
+              "Type Price",
+              style: TextStyle(color: Colors.black),
+            ),
+            icon: const Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: Colors.black,
+            ),
+            decoration: _decoration(hint: "Type Price"),
+            items: PRICE_TYPE
+                .map((e) => DropdownMenuItem<String>(value: e, child: Text(e, style: const TextStyle(color: Colors.black))))
+                .toList(),
+            onChanged: (v) => setState(() => priceList[index]["typePrice"] = v),
+            validator: (v) => v == null ? "Pilih type price" : null,
+          ),
 
-        if (priceList.length > 1)
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton.icon(
-              onPressed: () => _removePrice(index),
-              icon: const Icon(Icons.delete, color: Colors.red),
-              label: const Text(
-                "Remove",
-                style: TextStyle(color: Colors.red),
+          if (priceList.length > 1)
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: () => _removePrice(index),
+                icon: const Icon(Icons.delete, color: Colors.red),
+                label: const Text(
+                  "Remove",
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ),
-          ),
-      ],
-    ),
-  );
-}
-
+        ],
+      ),
+    );
+  }
 
   Widget _card(Widget child) {
     return Container(
@@ -365,10 +431,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
+        ),
         const SizedBox(height: 6),
         TextFormField(
+          style: const TextStyle(color: Colors.black),
           controller: controller,
           keyboardType: keyboardType,
           validator: (v) =>
@@ -383,16 +456,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Product Image (Google Drive)",
-            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+        const Text(
+          "Product Image (Google Drive)",
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
+        ),
         const SizedBox(height: 6),
         Row(
           children: [
             Expanded(
               flex: 3,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF5F6F9),
                   borderRadius: BorderRadius.circular(12),
@@ -407,6 +488,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             Expanded(
               flex: 2,
               child: TextFormField(
+                style: const TextStyle(color: Colors.black),
                 controller: imageIdController,
                 validator: (v) =>
                     v == null || v.isEmpty ? "Image ID wajib diisi" : null,

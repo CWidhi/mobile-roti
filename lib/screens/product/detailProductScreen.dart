@@ -164,7 +164,11 @@ class _ProductInfo extends StatelessWidget {
         children: [
           Text(
             product.name,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
           const SizedBox(height: 10),
           Text(
@@ -178,7 +182,7 @@ class _ProductInfo extends StatelessWidget {
           const Divider(height: 32),
           const Text(
             "Daftar Harga",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
           const SizedBox(height: 8),
           ...product.prices.map(
@@ -187,8 +191,8 @@ class _ProductInfo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(priceTypeLabel(p.typePrice)),
-                  Text("Rp ${p.price}/${p.qty} ${p.unit}"),
+                  Text(priceTypeLabel(p.typePrice), style: const TextStyle(color: Colors.black)),
+                  Text("Rp ${p.price}/${p.qty} ${p.unit}", style: const TextStyle(color: Colors.black)),
                 ],
               ),
             ),
@@ -370,17 +374,19 @@ class _BottomBar extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        title: const Text("Hapus Produk"),
+        title: const Text("Hapus Produk", style: TextStyle(color: Colors.black)),
         content: const Text(
           "Produk akan dihapus permanen.\nTindakan ini tidak dapat dibatalkan.",
+          style: TextStyle(color: Colors.black),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Batal"),
+            child: const Text("Batal", style: TextStyle(color: Colors.black)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
