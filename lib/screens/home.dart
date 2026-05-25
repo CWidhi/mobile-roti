@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -318,6 +319,7 @@ class CategoryCard extends StatelessWidget {
               fontSize: 12,
               height: 1.2,
               fontWeight: FontWeight.w500,
+              color: Colors.black,
             ),
           ),
         ],
@@ -596,7 +598,7 @@ class _PopularProductsState extends State<PopularProducts> {
             if (products.isEmpty) {
               return const Padding(
                 padding: EdgeInsets.all(20),
-                child: Text("Produk belum tersedia"),
+                child: Text("Produk belum tersedia", style: TextStyle(color: Colors.black)),
               );
             }
 
