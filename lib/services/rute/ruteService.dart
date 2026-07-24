@@ -33,9 +33,7 @@ class RouteLineService {
     }
   }
 
-  static Future<List<RouteLine>> getRouteLinesDropdown(
-    int? userId,
-  ) async {
+  static Future<List<RouteLine>> getRouteLinesDropdown(int? userId) async {
     final token = await LoginService.getToken();
     if (token == null) {
       throw Exception("Unauthorized: token tidak ditemukan");
@@ -69,27 +67,41 @@ class RouteLineService {
       throw Exception("Unauthorized: token tidak ditemukan");
     }
 
-    final response = await http.get(
-      Uri.parse("$baseUrl/api/rute-line/").replace(
-        queryParameters: {
-          if (search != null && search.isNotEmpty) "search": search,
-        },
-      ),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
-    );
+    List<RouteLine> routes = [];
 
-    if (response.statusCode == 200) {
+    String? nextUrl =
+        url ??
+        Uri.parse("$baseUrl/api/rute-line/")
+            .replace(
+              queryParameters: {
+                if (search != null && search.isNotEmpty) "search": search,
+              },
+            )
+            .toString();
+
+    while (nextUrl != null) {
+      final response = await http.get(
+        Uri.parse(nextUrl),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception("Gagal mengambil data route line");
+      }
+
       final body = jsonDecode(response.body);
 
-      final List results = body['data']['results'];
+      final List results = body["data"]["results"];
 
-      return results.map((e) => RouteLine.fromJson(e)).toList();
-    } else {
-      throw Exception("Gagal mengambil data route line");
+      routes.addAll(results.map((e) => RouteLine.fromJson(e)).toList());
+
+      nextUrl = body["data"]["next"];
     }
+
+    return routes;
   }
 
   static Future<void> createRouteLine(Map<String, dynamic> payload) async {
@@ -109,7 +121,9 @@ class RouteLineService {
   }
 
   static Future<void> updateRouteLine(
-      int id, Map<String, dynamic> payload) async {
+    int id,
+    Map<String, dynamic> payload,
+  ) async {
     final token = await LoginService.getToken();
     final response = await http.put(
       Uri.parse("$baseUrl/api/rute-line/$id/"),
@@ -181,16 +195,14 @@ class RouteLineService {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
-      body: jsonEncode({
-        "user_id": userId,
-        "rute_line_id": ruteLineId,
-      }),
+      body: jsonEncode({"user_id": userId, "rute_line_id": ruteLineId}),
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception("Gagal menambahkan user ke rute");
     }
   }
+
   static Future<void> removeUserToRute({
     required int userId,
     required int ruteLineId,
@@ -203,10 +215,7 @@ class RouteLineService {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
-      body: jsonEncode({
-        "user_id": userId,
-        "rute_line_id": ruteLineId,
-      }),
+      body: jsonEncode({"user_id": userId, "rute_line_id": ruteLineId}),
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
