@@ -6,8 +6,9 @@ import 'package:frontend_roti/screens/auth/login.dart';
 import 'package:frontend_roti/screens/auth/accountScreen.dart';
 import 'package:frontend_roti/services/auth/userService.dart';
 import 'package:frontend_roti/screens/users/listUsersScreen.dart';
-import 'package:frontend_roti/screens/addUser/addRuteToUserScreen.dart';
-import 'package:frontend_roti/screens/addUser/removeRuteToUserScreen.dart';
+// import 'package:frontend_roti/screens/addUser/addRuteToUserScreen.dart';
+// import 'package:frontend_roti/screens/addUser/removeRuteToUserScreen.dart';
+import 'package:frontend_roti/screens/rute/ruteUserManagementScreen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -65,26 +66,26 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 if (isStaff)
                   ProfileMenu(
-                    text: "Add User to Rute",
+                    text: "management Rute",
                     iconSvg: routeIcon,
                     press: () {
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const RuteAddUserScreen()),
+                      MaterialPageRoute(builder: (_) => const RuteUserManagementScreen()),
                     );
                     },
                   ),
-                if (isStaff)
-                  ProfileMenu(
-                    text: "Remove User to Rute",
-                    iconSvg: routeIcon,
-                    press: () {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const RuteRemoveUserScreen()),
-                    );
-                    },
-                  ),
+                // if (isStaff)
+                //   ProfileMenu(
+                //     text: "Remove User to Rute",
+                //     iconSvg: routeIcon,
+                //     press: () {
+                //       Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (_) => const RuteRemoveUserScreen()),
+                //     );
+                //     },
+                //   ),
 
                 ProfileMenu(
                   text: "Log Out",

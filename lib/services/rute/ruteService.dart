@@ -222,4 +222,13 @@ class RouteLineService {
       throw Exception("Gagal menghapus user dari rute");
     }
   }
+
+  static Future<List<RouteLine>> getRouteByUser(String email) async {
+    return getRouteLines(
+      null,
+      Uri.parse(
+        "$baseUrl/api/rute-line/",
+      ).replace(queryParameters: {"email": email}).toString(),
+    );
+  }
 }
