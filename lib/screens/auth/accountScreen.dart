@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_roti/services/auth/userService.dart';
+import 'package:frontend_roti/screens/auth/chengePasswordScreen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -74,7 +75,12 @@ class AccountScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // navigasi ke change password screen
+                       Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const ChangePasswordScreen(),
+    ),
+  );
                     },
                     child: const Text(
                       "Change Password",

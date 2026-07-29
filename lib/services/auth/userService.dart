@@ -35,9 +35,7 @@ class UserService {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("access");
 
-    final uri = Uri.parse(
-      "$baseUrl/api/users/?search=$search",
-    );
+    final uri = Uri.parse("$baseUrl/api/users/?search=$search");
 
     final response = await http.get(
       uri,
@@ -93,5 +91,34 @@ class UserService {
     final me = await getMe();
     return me?["is_staff"] == true;
   }
-  
+
+  static Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("access");
+
+    final response = await http.post(
+      Uri.parse("$baseUrl/api/reset/"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode({
+        "old_password": oldPassword,
+        "new_password": newPassword,
+      }),
+    );
+
+    final body = jsonDecode(response.body);
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        body["error"]?.join("\n") ??
+            body["message"] ??
+            "Gagal mengubah password",
+      );
+    }
+  }
 }
