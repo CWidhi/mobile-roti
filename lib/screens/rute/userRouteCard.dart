@@ -217,13 +217,26 @@ class _UserRouteCardState extends State<UserRouteCard> {
             color: Colors.orange,
           ),
         ),
-        title: Text(
-          route.name,
-          style: const TextStyle(
-            color: Color(0xFF333333),
-            fontWeight: FontWeight.w500,
+        title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            route.name,
+            style: const TextStyle(
+              color: Color(0xFF333333),
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
+          const SizedBox(height: 4),
+          Text(
+            "${route.stores.length} store",
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 13,
+            ),
+          ),
+        ],
+      ),
       ),
     );
   }
