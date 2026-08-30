@@ -6,9 +6,7 @@ import 'package:frontend_roti/models/payment.dart';
 
 class PaymentService {
   static final String baseUrl = dotenv.get("BASE_URL");
-  static Future<Map<String, dynamic>> getPayments({
-    String? url,
-  }) async {
+  static Future<Map<String, dynamic>> getPayments({String? url}) async {
     final token = await LoginService.getToken();
     if (token == null) {
       throw Exception("Unauthorized");
@@ -45,9 +43,7 @@ class PaymentService {
       throw Exception("Unauthorized");
     }
 
-    final uri = Uri.parse(
-      "$baseUrl/api/payment/detail/$paymentId/",
-    );
+    final uri = Uri.parse("$baseUrl/api/payment/detail/$paymentId/");
 
     final response = await http.get(
       uri,
@@ -179,9 +175,35 @@ class PaymentService {
     final body = jsonDecode(response.body);
 
     if (response.statusCode != 201) {
-      String message = body["message"] ??
+      String message =
+          body["message"] ??
           body["error"]?["detail"] ??
           "Gagal menambahkan item";
+
+      throw Exception(message);
+    }
+  }
+
+  static Future<void> deletePaymentItem(int itemId) async {
+    final token = await LoginService.getToken();
+
+    if (token == null) {
+      throw Exception("Unauthorized");
+    }
+
+    final response = await http.delete(
+      Uri.parse("$baseUrl/api/payment/item/delete/$itemId/"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    final body = response.body.isNotEmpty ? jsonDecode(response.body) : {};
+
+    if (response.statusCode != 200) {
+      String message =
+          body["message"] ?? body["error"]?["detail"] ?? "Gagal menghapus item";
 
       throw Exception(message);
     }

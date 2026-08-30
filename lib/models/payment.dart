@@ -57,6 +57,7 @@ class Payment {
 
 
 class PaymentItem {
+  final int id;
   final String productName;
   final String unit;
   final String refundType;
@@ -65,6 +66,7 @@ class PaymentItem {
   final int total;
 
   PaymentItem({
+    required this.id,
     required this.productName,
     required this.unit,
     required this.refundType,
@@ -75,6 +77,7 @@ class PaymentItem {
 
   factory PaymentItem.fromJson(Map<String, dynamic> json) {
     return PaymentItem(
+      id: json['id'],
       productName: json['product']['name'],
       unit: json['unit'],
       refundType: json['refund_type'],

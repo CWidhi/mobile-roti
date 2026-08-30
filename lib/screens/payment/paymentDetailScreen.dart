@@ -71,6 +71,29 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
     await _loadPayment();
   }
 
+  /// ================= DELETE =================
+  Future<void> _deletePaymentItem(PaymentItem item) async {
+    try {
+      await PaymentService.deletePaymentItem(item.id);
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Item berhasil dihapus")));
+
+      await _refreshPayment();
+    } catch (e) {
+      if (!mounted) return;
+
+      final message = e.toString().replaceFirst("Exception: ", "");
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (payment == null) {
@@ -204,7 +227,13 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: const TextStyle(color: Colors.grey)),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
+          Text(
+            value,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
         ],
       ),
     );
@@ -238,11 +267,19 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          /// ================= PRODUCT =================
           Text(
             item.productName,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              color: Colors.black,
+            ),
           ),
+
           const SizedBox(height: 6),
+
+          /// ================= QTY & TOTAL =================
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -252,16 +289,25 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
               ),
               Text(
                 currency.format(item.total),
-                style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
+
           const SizedBox(height: 6),
+
+          /// ================= PRICE =================
           Text(
             currency.format(item.price),
             style: const TextStyle(color: Colors.grey),
           ),
-          const SizedBox(height: 6),
+
+          const SizedBox(height: 8),
+
+          /// ================= REFUND TYPE =================
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
@@ -279,9 +325,79 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
               ),
             ),
           ),
-          
+
+          const SizedBox(height: 12),
+
+          /// ================= DELETE BUTTON =================
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.red,
+                side: BorderSide(color: Colors.red.shade300),
+                minimumSize: const Size(double.infinity, 42),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                _showDeleteConfirmation(item);
+              },
+              icon: const Icon(Icons.delete_outline, size: 18),
+              label: const Text(
+                "Hapus Item",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  void _showDeleteConfirmation(PaymentItem item) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text(
+            "Hapus Item?",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+            'Apakah kamu yakin ingin menghapus "${item.productName}"?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text("Batal", style: TextStyle(color: Colors.grey)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () async {
+                Navigator.pop(dialogContext);
+
+                await _deletePaymentItem(item);
+              },
+              child: const Text(
+                "Hapus",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
