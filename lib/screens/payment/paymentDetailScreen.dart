@@ -841,7 +841,7 @@ void showAddItemModal({
 
   final qtyController = TextEditingController();
 
-  String selectedUnit = PRODUCT_TYPE.first;
+  // String selectedUnit = PRODUCT_TYPE.first;
   String refundType = ITEM_TYPE.first;
   String store = STORE_TYPE.first;
 
@@ -971,6 +971,7 @@ void showAddItemModal({
                 const SizedBox(height: 12),
 
                 /// ================= UNIT =================
+                /*
                 DropdownButtonFormField<String>(
                   dropdownColor: Colors.white,
                   icon: const Icon(
@@ -1001,6 +1002,7 @@ void showAddItemModal({
                 ),
 
                 const SizedBox(height: 12),
+                */
 
                 /// ================= REFUND TYPE =================
                 DropdownButtonFormField<String>(
@@ -1102,7 +1104,7 @@ void showAddItemModal({
                               await PaymentService.createPaymentItem(
                                 paymentId: payment.id,
                                 productId: selectedProduct!.id,
-                                unit: selectedUnit,
+                                /*unit: selectedUnit,*/
                                 refundType: refundType,
                                 qty: qty,
                                 store: store,

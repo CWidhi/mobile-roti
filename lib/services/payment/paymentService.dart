@@ -146,7 +146,7 @@ class PaymentService {
   static Future<void> createPaymentItem({
     required int paymentId,
     required int productId,
-    required String unit,
+    /*required String unit,*/
     required String refundType, // "retur" / "bs"
     required int qty,
     required String store, // "pasar" / "toko"
@@ -165,7 +165,7 @@ class PaymentService {
       },
       body: jsonEncode({
         "product_id": productId,
-        "unit": unit,
+        /*"unit": unit,*/
         "refund_type": refundType,
         "qty": qty,
         "store": store,
