@@ -41,6 +41,7 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
             unit: e.unit,
             qty: e.qty,
             marketStore: e.marketStore,
+            retail: e.retail,
           ),
         )
         .toList();
@@ -77,6 +78,7 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
           unit: PRODUCT_TYPE.first,
           qty: 1,
           marketStore: false,
+          retail: false,
         ),
       );
     });
@@ -119,6 +121,7 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
                 "unit": e.unit,
                 "qty": e.qty,
                 "market_store": e.marketStore,
+                "retail": e.retail,
               },
             )
             .toList(),
@@ -355,6 +358,23 @@ class _OrderUpdateScreenState extends State<OrderUpdateScreen> {
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: Colors.grey.shade400,
           ),
+
+          // RETAIL SWITCH
+          const SizedBox(height: 8),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text(
+              "Retail",
+              style: TextStyle(color: Colors.black),
+            ),
+            value: item.retail,
+            onChanged: (v) => setState(() => item.retail = v),
+            activeColor: Colors.white,
+            activeTrackColor: const Color(0xFFFF7643),
+
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: Colors.grey.shade400,
+          ),
         ],
       ),
     );
@@ -386,6 +406,7 @@ class _OrderItemForm {
   String unit;
   int qty;
   bool marketStore;
+  bool retail;
 
   _OrderItemForm({
     required this.productId,
@@ -393,5 +414,6 @@ class _OrderItemForm {
     required this.unit,
     required this.qty,
     required this.marketStore,
+    required this.retail,
   });
 }

@@ -306,6 +306,22 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: Colors.grey.shade400,
           ),
+
+          /// RETAIL 
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            value: item.retail,
+            onChanged: (v) => setState(() => item.retail = v),
+            title: const Text(
+              "Retail",
+              style: TextStyle(color: Colors.black),
+            ),
+            activeColor: Colors.white,
+            activeTrackColor: const Color(0xFFFF7643),
+
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: Colors.grey.shade400,
+          ),
         ],
       ),
     );

@@ -9,6 +9,7 @@ class OrderPickingItem {
   final int price;
   final int total;
   final bool marketStore;
+  final bool retail;
 
   OrderPickingItem({
     required this.id,
@@ -18,6 +19,7 @@ class OrderPickingItem {
     required this.price,
     required this.total,
     required this.marketStore,
+    required this.retail,
   });
 
   factory OrderPickingItem.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class OrderPickingItem {
       price: json['price'],
       total: json['total'],
       marketStore: json['market_store'],
+      retail: json['retail'],
     );
   }
 
