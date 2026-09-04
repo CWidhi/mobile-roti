@@ -153,9 +153,9 @@ class ProductService {
   }
 
   static Future<void> updateProduct(
-      int productId, 
-      Map<String, dynamic> payload
-    ) async {
+    int productId,
+    Map<String, dynamic> payload,
+  ) async {
     final url = Uri.parse("$baseUrl/api/product/update/$productId/");
     final token = await LoginService.getToken();
 
@@ -170,7 +170,37 @@ class ProductService {
 
     if (response.statusCode != 200) {
       throw Exception(
-          "Gagal memperbarui produk: ${response.statusCode} ${response.body}");
+        "Gagal memperbarui produk: ${response.statusCode} ${response.body}",
+      );
+    }
+  }
+
+  static Future<void> adjustStock({
+    required int productId,
+    required int stock,
+    required String unit,
+  }) async {
+    final token = await LoginService.getToken();
+
+    final response = await http.put(
+      Uri.parse("$baseUrl/api/product/adjust/stock/$productId/"),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({"stock": stock, "unit": unit}),
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      try {
+        final body = jsonDecode(response.body);
+
+        throw Exception(
+          body["message"] ?? body["detail"] ?? "Gagal melakukan adjust stock",
+        );
+      } catch (_) {
+        throw Exception("Gagal melakukan adjust stock");
+      }
     }
   }
 }

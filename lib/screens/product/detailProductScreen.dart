@@ -44,8 +44,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     });
 
     try {
-      final updatedProduct =
-          await ProductService.getProductDetail(widget.productId);
+      final updatedProduct = await ProductService.getProductDetail(
+        widget.productId,
+      );
       if (!mounted) return;
       setState(() {
         product = updatedProduct;
@@ -66,10 +67,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6F9),
       body: ListView(
-        children: [
-          _ProductImage(product.image),
-          _ProductInfo(product),
-        ],
+        children: [_ProductImage(product.image), _ProductInfo(product)],
       ),
       bottomNavigationBar: isAdmin
           ? _BottomBar(
@@ -136,10 +134,7 @@ class _ProductImage extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: AspectRatio(
           aspectRatio: 1,
-          child: Image.network(
-            image,
-            fit: BoxFit.contain,
-          ),
+          child: Image.network(image, fit: BoxFit.contain),
         ),
       ),
     );
@@ -191,8 +186,14 @@ class _ProductInfo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(priceTypeLabel(p.typePrice), style: const TextStyle(color: Colors.black)),
-                  Text("Rp ${p.price}/${p.qty} ${p.unit}", style: const TextStyle(color: Colors.black)),
+                  Text(
+                    priceTypeLabel(p.typePrice),
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                  Text(
+                    "Rp ${p.price}/${p.qty} ${p.unit}",
+                    style: const TextStyle(color: Colors.black),
+                  ),
                 ],
               ),
             ),
@@ -246,9 +247,7 @@ class _BottomBar extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFFFFECDF),
         minimumSize: const Size(double.infinity, 52),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 2,
       ),
       onPressed: () {},
@@ -295,10 +294,7 @@ class _BottomBar extends StatelessWidget {
                     onUpdate(); // refresh product setelah update
                   }
                 },
-                icon: const Icon(
-                  Icons.edit,
-                  color: Color(0xFFFF7643),
-                ),
+                icon: const Icon(Icons.edit, color: Color(0xFFFF7643)),
                 label: const Text(
                   "Edit Produk",
                   style: TextStyle(
@@ -324,16 +320,11 @@ class _BottomBar extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ProductPriceScreen(
-                        productId: productId,
-                      ),
+                      builder: (_) => ProductPriceScreen(productId: productId),
                     ),
                   );
                 },
-                icon: const Icon(
-                  Icons.price_change,
-                  color: Color(0xFFFF7643),
-                ),
+                icon: const Icon(Icons.price_change, color: Color(0xFFFF7643)),
                 label: const Text(
                   "Kelola Harga",
                   style: TextStyle(
@@ -347,15 +338,39 @@ class _BottomBar extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 10),
+
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFFECDF),
+              minimumSize: const Size(double.infinity, 48),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            onPressed: () => _showAdjustStockModal(context, productId: productId),
+            icon: const Icon(
+              Icons.inventory_2_outlined,
+              color: Color(0xFFFF7643),
+            ),
+            label: const Text(
+              "Adjust Stock",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFFF7643),
+              ),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
         TextButton.icon(
-          style: TextButton.styleFrom(
-            foregroundColor: const Color(0xFFFFECDF),
-          ),
+          style: TextButton.styleFrom(foregroundColor: const Color(0xFFFFECDF)),
           onPressed: () => _confirmDelete(context),
-          icon: const Icon(
-            Icons.delete_outline,
-            color: Color(0xFFFF7643),
-          ),
+          icon: const Icon(Icons.delete_outline, color: Color(0xFFFF7643)),
           label: const Text(
             "Hapus Produk",
             style: TextStyle(
@@ -375,10 +390,11 @@ class _BottomBar extends StatelessWidget {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          "Hapus Produk",
+          style: TextStyle(color: Colors.black),
         ),
-        title: const Text("Hapus Produk", style: TextStyle(color: Colors.black)),
         content: const Text(
           "Produk akan dihapus permanen.\nTindakan ini tidak dapat dibatalkan.",
           style: TextStyle(color: Colors.black),
@@ -389,9 +405,7 @@ class _BottomBar extends StatelessWidget {
             child: const Text("Batal", style: TextStyle(color: Colors.black)),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
             onPressed: () async {
               Navigator.pop(context);
 
@@ -418,13 +432,185 @@ class _BottomBar extends StatelessWidget {
                 );
               }
             },
-            child: const Text(
-              "Hapus",
-              style: TextStyle(color: Colors.white),
-            ),
+            child: const Text("Hapus", style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _showAdjustStockModal(
+    BuildContext context, {
+    required int productId,
+  }) async {
+    final qtyController = TextEditingController();
+    String selectedUnit = "Ball";
+    bool isLoading = false;
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              title: const Text(
+                "Adjust Stock",
+                style: TextStyle(color: Colors.black),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: qtyController,
+                    keyboardType: TextInputType.number,
+                    enabled: !isLoading,
+                    style: const TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      labelText: "Qty",
+                      hintText: "Masukkan jumlah stock",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  DropdownButtonFormField<String>(
+                    value: selectedUnit,
+                    style: const TextStyle(color: Colors.black),
+                    dropdownColor: Colors.white,
+                    decoration: InputDecoration(
+                      labelText: "Unit",
+                      labelStyle: const TextStyle(color: Colors.black),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                    items: PRODUCT_TYPE.map((unit) {
+                      return DropdownMenuItem<String>(
+                        value: unit,
+                        child: Text(
+                          unit,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: isLoading
+                        ? null
+                        : (value) {
+                            if (value != null) {
+                              setState(() {
+                                selectedUnit = value;
+                              });
+                            }
+                          },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          Navigator.pop(dialogContext, false);
+                        },
+                  child: const Text(
+                    "Batal",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFF7643),
+                  ),
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          final qty = int.tryParse(qtyController.text);
+
+                          if (qty == null || qty <= 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Qty harus berupa angka lebih dari 0",
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          try {
+                            await ProductService.adjustStock(
+                              productId: productId,
+                              stock: qty,
+                              unit: selectedUnit,
+                            );
+
+                            if (context.mounted) {
+                              Navigator.pop(dialogContext, true);
+                            }
+                          } catch (e) {
+                            setState(() {
+                              isLoading = false;
+                            });
+
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    e.toString().replaceFirst(
+                                      "Exception: ",
+                                      "",
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text(
+                          "Simpan",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    qtyController.dispose();
+
+    if (result == true) {
+      onUpdate();
+    }
   }
 }
