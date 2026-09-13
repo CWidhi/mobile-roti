@@ -144,6 +144,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             children: [
               // Search bar
               TextField(
+                style: const TextStyle(color: Colors.black),
                 controller: searchController,
                 onChanged: _onSearch,
                 decoration: InputDecoration(

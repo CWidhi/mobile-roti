@@ -109,6 +109,7 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
             child: TextField(
+              style: const TextStyle(color: Colors.black),
               controller: searchController,
               onChanged: _onSearch,
               decoration: InputDecoration(

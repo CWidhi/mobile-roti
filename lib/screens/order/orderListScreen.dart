@@ -152,6 +152,7 @@ class _OrderPickingListScreenState extends State<OrderPickingListScreen> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: TextField(
+                style: const TextStyle(color: Colors.black),
                 controller: searchController,
                 onChanged: _onSearch,
                 decoration: InputDecoration(

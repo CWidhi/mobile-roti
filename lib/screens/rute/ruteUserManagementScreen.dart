@@ -96,6 +96,7 @@ class _RuteUserManagementScreenState
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 10),
       child: TextField(
+        style: const TextStyle(color: Colors.black),
         controller: _searchController,
         onChanged: _search,
         decoration: InputDecoration(
