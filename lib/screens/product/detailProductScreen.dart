@@ -542,11 +542,11 @@ class _BottomBar extends StatelessWidget {
                       : () async {
                           final qty = int.tryParse(qtyController.text);
 
-                          if (qty == null || qty <= 0) {
+                          if (qty == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                  "Qty harus berupa angka lebih dari 0",
+                                  "Qty harus berupa angka",
                                 ),
                               ),
                             );
