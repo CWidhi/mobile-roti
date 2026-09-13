@@ -7,6 +7,8 @@ import 'package:frontend_roti/services/supplier/supplierService.dart';
 import 'package:frontend_roti/services/products/productServices.dart';
 import 'package:frontend_roti/services/purchase/purchaseService.dart';
 import 'package:frontend_roti/models/purchase.dart';
+import 'package:frontend_roti/constants/generic.dart';
+import 'package:flutter/services.dart';
 
 class PurchaseUpdateScreen extends StatefulWidget {
   final int purchaseId;
@@ -236,6 +238,10 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
                   text: cashback?.toString() ?? "",
                 ),
                 onChanged: (v) => cashback = int.tryParse(v),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  RupiahInputFormatter(),
+                ],
                 decoration: InputDecoration(
                   prefixText: "Rp ",
                   filled: true,

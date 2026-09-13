@@ -92,6 +92,7 @@ class _RouteLineListScreenState extends State<RouteLineListScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
             child: TextField(
+              style: const TextStyle(color: Colors.black),
               controller: searchController,
               onSubmitted: (_) => _onSearch(),
               decoration: InputDecoration(

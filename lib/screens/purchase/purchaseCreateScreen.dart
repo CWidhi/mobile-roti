@@ -6,6 +6,8 @@ import 'package:frontend_roti/models/product.dart';
 import 'package:frontend_roti/services/supplier/supplierService.dart';
 import 'package:frontend_roti/services/products/productServices.dart';
 import 'package:frontend_roti/services/purchase/purchaseService.dart';
+import 'package:frontend_roti/constants/generic.dart';
+import 'package:flutter/services.dart';
 
 class PurchaseCreateScreen extends StatefulWidget {
   const PurchaseCreateScreen({super.key});
@@ -175,6 +177,7 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
               const Text("Keterangan", style: TextStyle(color: Colors.black87)),
               const SizedBox(height: 6),
               TextField(
+                style: const TextStyle(color: Colors.black),
                 maxLines: 3,
                 onChanged: (v) => description = v,
                 decoration: InputDecoration(
@@ -193,8 +196,13 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
               const Text("Cashback", style: TextStyle(color: Colors.black87)),
               const SizedBox(height: 6),
               TextField(
+                style: const TextStyle(color: Colors.black),
                 keyboardType: TextInputType.number,
                 onChanged: (v) => cashback = int.tryParse(v),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  RupiahInputFormatter(),
+                ],
                 decoration: InputDecoration(
                   hintText: "Jumlah cashback",
                   hintStyle: TextStyle(color: Color.fromARGB(255, 77, 76, 76)),

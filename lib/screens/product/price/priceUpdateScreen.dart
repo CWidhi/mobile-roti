@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_roti/services/products/priceService.dart';
 import 'package:frontend_roti/constants/helper.dart';
+import 'package:frontend_roti/constants/generic.dart';
+import 'package:flutter/services.dart';
 
 class UpdateProductPriceScreen extends StatefulWidget {
   final int productId;
@@ -202,7 +204,21 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
                     TextFormField(
                       controller: priceController,
                       keyboardType: TextInputType.number,
-                      decoration: _decoration("Harga"),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        RupiahInputFormatter(),
+                      ],
+                      decoration: InputDecoration(
+                        hintText: "Harga",
+                        hintStyle: TextStyle(color: Color.fromARGB(255, 77, 76, 76)),
+                        prefixText: "Rp ",
+                        filled: true,
+                        fillColor: const Color(0xFFF5F6F9),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
                       style: const TextStyle(color: Colors.black),
                       validator: (v) =>
                           v == null || v.isEmpty ? "Harga wajib diisi" : null,
