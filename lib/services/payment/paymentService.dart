@@ -6,19 +6,26 @@ import 'package:frontend_roti/models/payment.dart';
 
 class PaymentService {
   static final String baseUrl = dotenv.get("BASE_URL");
-  static Future<Map<String, dynamic>> getPayments({String? url}) async {
+
+  static Future<Map<String, dynamic>> getPayments({
+    String? url,
+    String search = "",
+  }) async {
     final token = await LoginService.getToken();
+
     if (token == null) {
       throw Exception("Unauthorized");
     }
 
     Uri uri;
 
-    /// pagination (next / previous)
+    /// Pagination (next / previous)
     if (url != null) {
       uri = Uri.parse(url);
     } else {
-      uri = Uri.parse("$baseUrl/api/payment/").replace();
+      uri = Uri.parse(
+        "$baseUrl/api/payment/",
+      ).replace(queryParameters: search.isNotEmpty ? {"search": search} : null);
     }
 
     final response = await http.get(
