@@ -198,7 +198,10 @@ class _PurchaseCreateScreenState extends State<PurchaseCreateScreen> {
               TextField(
                 style: const TextStyle(color: Colors.black),
                 keyboardType: TextInputType.number,
-                onChanged: (v) => cashback = int.tryParse(v),
+                onChanged: (v) {
+                  final value = v.replaceAll('.', '').replaceAll(',', '');
+                  cashback = int.tryParse(value) ?? 0;
+                },
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   RupiahInputFormatter(),

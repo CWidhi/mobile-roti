@@ -237,7 +237,10 @@ class _PurchaseUpdateScreenState extends State<PurchaseUpdateScreen> {
                 controller: TextEditingController(
                   text: cashback?.toString() ?? "",
                 ),
-                onChanged: (v) => cashback = int.tryParse(v),
+                onChanged: (v) {
+                  final value = v.replaceAll('.', '').replaceAll(',', '');
+                  cashback = int.tryParse(value) ?? 0;
+                },
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   RupiahInputFormatter(),
