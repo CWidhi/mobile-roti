@@ -6,6 +6,8 @@ import 'package:frontend_roti/services/payment/paymentService.dart';
 import 'package:frontend_roti/services/auth/userService.dart';
 import 'package:frontend_roti/services/products/productServices.dart';
 import 'package:frontend_roti/models/product.dart';
+import 'package:frontend_roti/constants/generic.dart';
+import 'package:flutter/services.dart';
 
 class PaymentDetailScreen extends StatefulWidget {
   final int paymentId;
@@ -547,6 +549,7 @@ void showPaymentModal({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -592,27 +595,54 @@ void showPaymentModal({
                 TextField(
                   controller: totalController,
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    RupiahInputFormatter(),
+                  ],
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
                   decoration: InputDecoration(
                     labelText: "Jumlah Pembayaran",
+                    prefixText: "Rp ",
+                    labelStyle: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFF5F6F9),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF7643),
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFFFF7643),
                       minimumSize: const Size(double.infinity, 48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: const BorderSide(
+                          color: Color(0xFFFF7643),
+                        ),
+                      ),
+                      elevation: 0,
                     ),
                     onPressed: isLoading
                         ? null
                         : () async {
-                            final totalPaid = int.tryParse(
-                              totalController.text,
-                            );
+                            // Hapus format rupiah sebelum parse
+                            final cleanValue = totalController.text
+                                .replaceAll('.', '')
+                                .replaceAll(',', '');
+
+                            final totalPaid = int.tryParse(cleanValue);
 
                             if (totalPaid == null || totalPaid <= 0) {
                               ScaffoldMessenger.of(parentContext).showSnackBar(
@@ -638,15 +668,15 @@ void showPaymentModal({
 
                               ScaffoldMessenger.of(parentContext).showSnackBar(
                                 const SnackBar(
-                                  content: Text("Pembayaran berhasil disimpan"),
+                                  content: Text(
+                                    "Pembayaran berhasil disimpan",
+                                  ),
                                 ),
                               );
 
                               onSuccess();
                             } catch (e) {
-                              Navigator.pop(
-                                context,
-                              ); // 🔥 TUTUP MODAL SAAT ERROR
+                              Navigator.pop(context);
 
                               String message = e.toString().replaceFirst(
                                 "Exception: ",
@@ -655,16 +685,30 @@ void showPaymentModal({
 
                               ScaffoldMessenger.of(
                                 parentContext,
-                              ).showSnackBar(SnackBar(content: Text(message)));
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                ),
+                              );
                             } finally {
                               setState(() => isLoading = false);
                             }
                           },
                     child: isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Color(0xFFFF7643),
+                              strokeWidth: 2,
+                            ),
+                          )
                         : const Text(
                             "Simpan Pembayaran",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Color(0xFFFF7643),
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                   ),
                 ),
@@ -690,6 +734,7 @@ void showRepaymentModal({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -708,13 +753,23 @@ void showRepaymentModal({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Center(
-                  child: Icon(Icons.drag_handle, color: Colors.grey),
+                  child: Icon(
+                    Icons.drag_handle,
+                    color: Colors.grey,
+                  ),
                 ),
+
                 const SizedBox(height: 8),
+
                 const Text(
                   "Cicil Pembayaran",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
+
                 const SizedBox(height: 16),
 
                 /// DATE
@@ -726,12 +781,21 @@ void showRepaymentModal({
                       firstDate: DateTime(2020),
                       lastDate: DateTime(2100),
                     );
+
                     if (picked != null) {
                       setState(() => selectedDate = picked);
                     }
                   },
-                  icon: const Icon(Icons.date_range),
-                  label: Text(DateFormat('dd MMM yyyy').format(selectedDate)),
+                  icon: const Icon(
+                    Icons.date_range,
+                    color: Color(0xFFFF7643),
+                  ),
+                  label: Text(
+                    DateFormat('dd MMM yyyy').format(selectedDate),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
 
                 const SizedBox(height: 12),
@@ -740,11 +804,25 @@ void showRepaymentModal({
                 TextField(
                   controller: totalController,
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    RupiahInputFormatter(),
+                  ],
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
                   decoration: InputDecoration(
                     labelText: "Jumlah Pembayaran",
-                    hintText: "Contoh: 42000",
+                    hintText: "Contoh: 42.000",
+                    prefixText: "Rp ",
+                    labelStyle: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFF5F6F9),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
@@ -756,16 +834,26 @@ void showRepaymentModal({
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF7643),
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFFFF7643),
                       minimumSize: const Size(double.infinity, 48),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
+                        side: const BorderSide(
+                          color: Color(0xFFFF7643),
+                        ),
                       ),
+                      elevation: 0,
                     ),
                     onPressed: isLoading
                         ? null
                         : () async {
-                            final amount = int.tryParse(totalController.text);
+                            // Remove rupiah formatting before parsing
+                            final cleanValue = totalController.text
+                                .replaceAll('.', '')
+                                .replaceAll(',', '');
+
+                            final amount = int.tryParse(cleanValue);
 
                             if (amount == null || amount <= 0) {
                               ScaffoldMessenger.of(parentContext).showSnackBar(
@@ -791,15 +879,16 @@ void showRepaymentModal({
 
                               ScaffoldMessenger.of(parentContext).showSnackBar(
                                 const SnackBar(
-                                  content: Text("Pembayaran berhasil disimpan"),
+                                  content: Text(
+                                    "Pembayaran berhasil disimpan",
+                                  ),
                                 ),
                               );
 
                               onSuccess();
                             } catch (e) {
-                              Navigator.pop(
-                                context,
-                              ); // 🔥 TUTUP MODAL SAAT ERROR
+                              Navigator.pop(context);
+
                               String message = e.toString().replaceFirst(
                                 "Exception: ",
                                 "",
@@ -807,18 +896,29 @@ void showRepaymentModal({
 
                               ScaffoldMessenger.of(
                                 parentContext,
-                              ).showSnackBar(SnackBar(content: Text(message)));
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                ),
+                              );
                             } finally {
                               setState(() => isLoading = false);
                             }
                           },
                     child: isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Color(0xFFFF7643),
+                              strokeWidth: 2,
+                            ),
+                          )
                         : const Text(
                             "Simpan Pembayaran",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Color(0xFFFF7643),
                             ),
                           ),
                   ),
