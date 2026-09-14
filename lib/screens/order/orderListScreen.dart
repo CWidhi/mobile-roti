@@ -5,6 +5,7 @@ import 'package:frontend_roti/models/order.dart';
 import 'package:frontend_roti/services/order/orderService.dart';
 import 'package:frontend_roti/screens/order/orderCreateScreen.dart';
 import 'package:frontend_roti/screens/order/orderDetailScreen.dart';
+import 'package:frontend_roti/services/auth/userService.dart';
 
 class OrderPickingListScreen extends StatefulWidget {
   final bool isAdmin;
@@ -30,10 +31,15 @@ class _OrderPickingListScreenState extends State<OrderPickingListScreen> {
   bool isLoading = false;
   bool isRefreshing = false;
 
+  List<dynamic> users = [];
+  bool isLoadingUsers = false;
+  String? selectedUserEmail;
+
   @override
   void initState() {
     super.initState();
     fetchOrders();
+    fetchUsers();
 
     _scrollController.addListener(() {
       if (!isRefreshing &&
@@ -51,8 +57,10 @@ class _OrderPickingListScreenState extends State<OrderPickingListScreen> {
     setState(() => isLoading = true);
 
     try {
+      final effectiveSearch = selectedUserEmail ?? search ?? '';
+
       final data = await OrderPickingService.getOrderPickings(
-        search: search,
+        search: url == null ? effectiveSearch : "",
         url: url,
       );
 
@@ -70,6 +78,26 @@ class _OrderPickingListScreenState extends State<OrderPickingListScreen> {
       debugPrint(e.toString());
     } finally {
       setState(() => isLoading = false);
+    }
+  }
+
+  Future<void> fetchUsers() async {
+    setState(() {
+      isLoadingUsers = true;
+    });
+
+    try {
+      final data = await UserService.getUsers();
+
+      setState(() {
+        users = data;
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      setState(() {
+        isLoadingUsers = false;
+      });
     }
   }
 
@@ -105,6 +133,106 @@ class _OrderPickingListScreenState extends State<OrderPickingListScreen> {
   }
 
   /// ================= UI =================
+  Widget _userList() {
+    if (isLoadingUsers) {
+      return const SizedBox(
+        height: 82,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 82,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 10,
+        ),
+        itemCount: users.length + 1,
+        separatorBuilder: (_, __) => const SizedBox(width: 10),
+        itemBuilder: (context, index) {
+          // Semua user
+          if (index == 0) {
+            final selected = selectedUserEmail == null;
+
+            return _userItem(
+              name: "Semua",
+              email: null,
+              selected: selected,
+            );
+          }
+
+          final user = users[index - 1];
+
+          final email = user["email"]?.toString() ?? "";
+          final username = user["username"]?.toString() ?? email;
+
+          return _userItem(
+            name: username,
+            email: email,
+            selected: selectedUserEmail == email,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _userItem({
+    required String name,
+    required String? email,
+    required bool selected,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedUserEmail = email;
+          orders.clear();
+          nextPageUrl = null;
+        });
+
+        fetchOrders(url: null);
+      },
+      child: Container(
+        width: 110,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 8,
+        ),
+        decoration: BoxDecoration(
+          color: selected
+              ? const Color(0xFFFF7643)
+              : const Color(0xFFF5F6F9),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.person,
+              size: 20,
+              color: selected ? Colors.white : Colors.grey,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: selected ? Colors.white : Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final currency = NumberFormat.currency(
@@ -148,6 +276,7 @@ class _OrderPickingListScreenState extends State<OrderPickingListScreen> {
       body: SafeArea(
         child: Column(
           children: [
+             _userList(),
             /// SEARCH
             Padding(
               padding: const EdgeInsets.all(16),
