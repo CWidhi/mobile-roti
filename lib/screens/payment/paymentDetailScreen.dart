@@ -599,15 +599,11 @@ void showPaymentModal({
                     FilteringTextInputFormatter.digitsOnly,
                     RupiahInputFormatter(),
                   ],
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
+                  style: const TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: "Jumlah Pembayaran",
                     prefixText: "Rp ",
-                    labelStyle: const TextStyle(
-                      color: Colors.grey,
-                    ),
+                    labelStyle: const TextStyle(color: Colors.grey),
                     filled: true,
                     fillColor: const Color(0xFFF5F6F9),
                     border: OutlineInputBorder(
@@ -628,9 +624,7 @@ void showPaymentModal({
                       minimumSize: const Size(double.infinity, 48),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                        side: const BorderSide(
-                          color: Color(0xFFFF7643),
-                        ),
+                        side: const BorderSide(color: Color(0xFFFF7643)),
                       ),
                       elevation: 0,
                     ),
@@ -668,9 +662,7 @@ void showPaymentModal({
 
                               ScaffoldMessenger.of(parentContext).showSnackBar(
                                 const SnackBar(
-                                  content: Text(
-                                    "Pembayaran berhasil disimpan",
-                                  ),
+                                  content: Text("Pembayaran berhasil disimpan"),
                                 ),
                               );
 
@@ -685,11 +677,7 @@ void showPaymentModal({
 
                               ScaffoldMessenger.of(
                                 parentContext,
-                              ).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                ),
-                              );
+                              ).showSnackBar(SnackBar(content: Text(message)));
                             } finally {
                               setState(() => isLoading = false);
                             }
@@ -753,10 +741,7 @@ void showRepaymentModal({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Center(
-                  child: Icon(
-                    Icons.drag_handle,
-                    color: Colors.grey,
-                  ),
+                  child: Icon(Icons.drag_handle, color: Colors.grey),
                 ),
 
                 const SizedBox(height: 8),
@@ -786,15 +771,10 @@ void showRepaymentModal({
                       setState(() => selectedDate = picked);
                     }
                   },
-                  icon: const Icon(
-                    Icons.date_range,
-                    color: Color(0xFFFF7643),
-                  ),
+                  icon: const Icon(Icons.date_range, color: Color(0xFFFF7643)),
                   label: Text(
                     DateFormat('dd MMM yyyy').format(selectedDate),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
+                    style: const TextStyle(color: Colors.black),
                   ),
                 ),
 
@@ -808,16 +788,12 @@ void showRepaymentModal({
                     FilteringTextInputFormatter.digitsOnly,
                     RupiahInputFormatter(),
                   ],
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
+                  style: const TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: "Jumlah Pembayaran",
                     hintText: "Contoh: 42.000",
                     prefixText: "Rp ",
-                    labelStyle: const TextStyle(
-                      color: Colors.grey,
-                    ),
+                    labelStyle: const TextStyle(color: Colors.grey),
                     filled: true,
                     fillColor: const Color(0xFFF5F6F9),
                     border: OutlineInputBorder(
@@ -839,9 +815,7 @@ void showRepaymentModal({
                       minimumSize: const Size(double.infinity, 48),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
-                        side: const BorderSide(
-                          color: Color(0xFFFF7643),
-                        ),
+                        side: const BorderSide(color: Color(0xFFFF7643)),
                       ),
                       elevation: 0,
                     ),
@@ -879,9 +853,7 @@ void showRepaymentModal({
 
                               ScaffoldMessenger.of(parentContext).showSnackBar(
                                 const SnackBar(
-                                  content: Text(
-                                    "Pembayaran berhasil disimpan",
-                                  ),
+                                  content: Text("Pembayaran berhasil disimpan"),
                                 ),
                               );
 
@@ -896,11 +868,7 @@ void showRepaymentModal({
 
                               ScaffoldMessenger.of(
                                 parentContext,
-                              ).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                ),
-                              );
+                              ).showSnackBar(SnackBar(content: Text(message)));
                             } finally {
                               setState(() => isLoading = false);
                             }
@@ -1105,61 +1073,73 @@ void showAddItemModal({
                 */
 
                 /// ================= REFUND TYPE =================
-                DropdownButtonFormField<String>(
-                  dropdownColor: Colors.white,
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down_rounded,
+                const Text(
+                  "Refund Type",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
                     color: Colors.black,
                   ),
-                  value: ITEM_TYPE.contains(refundType) ? refundType : null,
-                  items: ITEM_TYPE
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(
-                            e,
-                            style: const TextStyle(color: Colors.black),
-                          ),
+                ),
+
+                const SizedBox(height: 4),
+
+                Row(
+                  children: ITEM_TYPE.map((type) {
+                    return Expanded(
+                      child: RadioListTile<String>(
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(
+                          type,
+                          style: const TextStyle(color: Colors.black),
                         ),
-                      )
-                      .toList(),
-                  onChanged: (val) => setState(() => refundType = val!),
-                  decoration: InputDecoration(
-                    labelText: "Refund Type",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                        value: type,
+                        groupValue: refundType,
+                        activeColor: const Color(0xFFFF7643),
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() => refundType = value);
+                          }
+                        },
+                      ),
+                    );
+                  }).toList(),
                 ),
 
                 const SizedBox(height: 12),
 
                 /// ================= STORE =================
-                DropdownButtonFormField<String>(
-                  dropdownColor: Colors.white,
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down_rounded,
+                const Text(
+                  "Store",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
                     color: Colors.black,
                   ),
-                  value: STORE_TYPE.contains(store) ? store : null,
-                  items: STORE_TYPE
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(
-                            e,
-                            style: const TextStyle(color: Colors.black),
-                          ),
+                ),
+
+                const SizedBox(height: 4),
+
+                Row(
+                  children: STORE_TYPE.map((type) {
+                    return Expanded(
+                      child: RadioListTile<String>(
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(
+                          type,
+                          style: const TextStyle(color: Colors.black),
                         ),
-                      )
-                      .toList(),
-                  onChanged: (val) => setState(() => store = val!),
-                  decoration: InputDecoration(
-                    labelText: "Store",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                        value: type,
+                        groupValue: store,
+                        activeColor: const Color(0xFFFF7643),
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() => store = value);
+                          }
+                        },
+                      ),
+                    );
+                  }).toList(),
                 ),
 
                 const SizedBox(height: 20),
