@@ -86,10 +86,15 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
     setState(() => submitting = true);
 
     try {
+      final quantityText = qtyController.text.replaceAll(RegExp(r'[^0-9]'), '');
+      final priceText = priceController.text.replaceAll(RegExp(r'[^0-9]'), '');
+
+      final quantity = int.parse(quantityText);
+      final price = int.parse(priceText);
       await PriceService.updatePrice(widget.productId, widget.priceId, {
         "unit": unit,
-        "qty": int.parse(qtyController.text),
-        "price": int.parse(priceController.text),
+        "qty": quantity,
+        "price": price,
         "typePrice": typePrice,
       });
 
@@ -102,7 +107,7 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
         ),
       );
 
-      Navigator.pop(context, true); // 🔥 trigger refresh
+      Navigator.pop(context, true); 
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -112,7 +117,9 @@ class _UpdateProductPriceScreenState extends State<UpdateProductPriceScreen> {
         ),
       );
     } finally {
-      if (mounted) setState(() => submitting = false);
+      if (mounted) {
+        setState(() => loading = false);
+      }
     }
   }
 

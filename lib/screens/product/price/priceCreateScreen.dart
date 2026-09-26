@@ -4,7 +4,6 @@ import 'package:frontend_roti/constants/helper.dart';
 import 'package:frontend_roti/constants/generic.dart';
 import 'package:flutter/services.dart';
 
-
 class CreateProductPriceScreen extends StatefulWidget {
   final int productId;
 
@@ -48,11 +47,17 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
     setState(() => loading = true);
 
     try {
+      final quantityText = qtyController.text.replaceAll(RegExp(r'[^0-9]'), '');
+      final priceText = priceController.text.replaceAll(RegExp(r'[^0-9]'), '');
+
+      final quantity = int.parse(quantityText);
+      final price = int.parse(priceText);
+
       await PriceService.createProductPrice(
         productId: widget.productId,
         unit: unit!,
-        quantity: int.parse(qtyController.text),
-        price: int.parse(priceController.text),
+        quantity: quantity,
+        price: price,
         typePrice: typePrice!,
       );
 
@@ -65,9 +70,10 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
         ),
       );
 
-      Navigator.pop(context, true); // 🔥 trigger refresh
+      Navigator.pop(context, true);
     } catch (e) {
       if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString()),
@@ -75,7 +81,9 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
         ),
       );
     } finally {
-      if (mounted) setState(() => loading = false);
+      if (mounted) {
+        setState(() => loading = false);
+      }
     }
   }
 
@@ -101,16 +109,21 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
                 dropdownColor: Colors.white,
                 value: unit,
                 icon: const Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: Colors.black,
-                  ),
-                hint: const Text(
-                  "Unit",
-                  style: TextStyle(color: Colors.black),
+                  Icons.keyboard_arrow_down_rounded,
+                  color: Colors.black,
                 ),
+                hint: const Text("Unit", style: TextStyle(color: Colors.black)),
                 decoration: _decoration(""),
                 items: PRODUCT_TYPE
-                    .map((u) => DropdownMenuItem(value: u, child: Text(u, style: const TextStyle(color: Colors.black))))
+                    .map(
+                      (u) => DropdownMenuItem(
+                        value: u,
+                        child: Text(
+                          u,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    )
                     .toList(),
                 onChanged: (v) => unit = v,
                 validator: (v) => v == null ? "Unit wajib dipilih" : null,
@@ -123,9 +136,9 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
                 dropdownColor: Colors.white,
                 value: typePrice,
                 icon: const Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: Colors.black,
-                  ),
+                  Icons.keyboard_arrow_down_rounded,
+                  color: Colors.black,
+                ),
                 hint: const Text(
                   "Tipe Harga",
                   style: TextStyle(color: Colors.black),
@@ -135,7 +148,10 @@ class _CreateProductPriceScreenState extends State<CreateProductPriceScreen> {
                     .map(
                       (e) => DropdownMenuItem(
                         value: e,
-                        child: Text(priceTypeLabel(e), style: const TextStyle(color: Colors.black)), // 👈 label rapi
+                        child: Text(
+                          priceTypeLabel(e),
+                          style: const TextStyle(color: Colors.black),
+                        ), // 👈 label rapi
                       ),
                     )
                     .toList(),
