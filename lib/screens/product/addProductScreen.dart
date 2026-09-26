@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend_roti/constants/helper.dart';
 import 'package:frontend_roti/services/products/productServices.dart';
+import 'package:frontend_roti/constants/generic.dart';
+import 'package:flutter/services.dart';
 
 const double vSpace = 14;
 const double sectionSpace = 22;
@@ -21,6 +23,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final nameController = TextEditingController();
   final imageIdController = TextEditingController();
   final stockQtyController = TextEditingController();
+  final priceController = TextEditingController();
+  static const String defaultImageId = "14JJY8oRy5fL_HjIlprHxRhAvn72i3xWU";
 
   String? productType;
   String? stockUnit;
@@ -68,7 +72,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     final payload = {
       "name": nameController.text,
-      "image": "$imagePrefix${imageIdController.text}",
+      "image": "$imagePrefix${imageIdController.text.trim().isEmpty ? defaultImageId : imageIdController.text.trim()}",
       "productType": productType,
       "units": unitList
           .map(
@@ -87,7 +91,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             (p) => {
               "unit": p["unit"],
               "qty": int.parse(p["qty"].text),
-              "price": int.parse(p["price"].text),
+              "price": parseFormattedNumber( p["price"].text),
               "typePrice": p["typePrice"],
             },
           )
@@ -369,6 +373,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
             priceList[index]["price"],
             keyboardType: TextInputType.number,
             hint: "Harga",
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              RupiahInputFormatter(),
+            ],
           ),
 
           const SizedBox(height: vSpace),
@@ -387,7 +395,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
             ),
             decoration: _decoration(hint: "Type Price"),
             items: PRICE_TYPE
-                .map((e) => DropdownMenuItem<String>(value: e, child: Text(e, style: const TextStyle(color: Colors.black))))
+                .map(
+                  (e) => DropdownMenuItem<String>(
+                    value: e,
+                    child: Text(e, style: const TextStyle(color: Colors.black)),
+                  ),
+                )
                 .toList(),
             onChanged: (v) => setState(() => priceList[index]["typePrice"] = v),
             validator: (v) => v == null ? "Pilih type price" : null,
@@ -427,6 +440,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     TextEditingController controller, {
     TextInputType keyboardType = TextInputType.text,
     String? hint,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -444,6 +458,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           style: const TextStyle(color: Colors.black),
           controller: controller,
           keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
           validator: (v) =>
               v == null || v.isEmpty ? "$label wajib diisi" : null,
           decoration: _decoration(hint: hint ?? label),
@@ -490,8 +505,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
               child: TextFormField(
                 style: const TextStyle(color: Colors.black),
                 controller: imageIdController,
-                validator: (v) =>
-                    v == null || v.isEmpty ? "Image ID wajib diisi" : null,
                 decoration: _decoration(hint: "Image ID"),
               ),
             ),

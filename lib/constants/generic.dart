@@ -42,3 +42,9 @@ String formatNumber(dynamic value) {
     (match) => '.',
   );
 }
+
+int parseFormattedNumber(String value) {
+  return int.parse(
+    value.replaceAll('.', '').replaceAll(',', '').trim(),
+  );
+}

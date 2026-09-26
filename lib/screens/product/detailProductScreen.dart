@@ -5,6 +5,8 @@ import 'package:frontend_roti/constants/helper.dart';
 import 'package:frontend_roti/services/auth/userService.dart';
 import 'package:frontend_roti/screens/product/updateProductScreen.dart';
 import 'package:frontend_roti/screens/product/price/priceListScreen.dart';
+import 'package:frontend_roti/constants/generic.dart';
+
 
 class ProductDetailsScreen extends StatefulWidget {
   final int productId;
@@ -191,7 +193,7 @@ class _ProductInfo extends StatelessWidget {
                     style: const TextStyle(color: Colors.black),
                   ),
                   Text(
-                    "Rp ${p.price}/${p.qty} ${p.unit}",
+                    "Rp ${formatNumber(p.price)}/${p.qty} ${p.unit}",
                     style: const TextStyle(color: Colors.black),
                   ),
                 ],
