@@ -154,9 +154,10 @@ class PaymentService {
     required int paymentId,
     required int productId,
     /*required String unit,*/
-    required String refundType, // "retur" / "bs"
+    String? refundType, // "retur" / "bs"
     required int qty,
-    required String store, // "pasar" / "toko"
+    String? store, // "pasar" / "toko"
+    required bool isMarket,
   }) async {
     final token = await LoginService.getToken();
 
@@ -176,6 +177,7 @@ class PaymentService {
         "refund_type": refundType,
         "qty": qty,
         "store": store,
+        "is_market": isMarket,
       }),
     );
 

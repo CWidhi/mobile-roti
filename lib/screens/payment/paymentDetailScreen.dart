@@ -196,9 +196,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                           label: const Text("Lihat Detail Order"),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: const Color(0xFFFF7643),
-                            side: const BorderSide(
-                              color: Color(0xFFFF7643),
-                            ),
+                            side: const BorderSide(color: Color(0xFFFF7643)),
                             minimumSize: const Size(double.infinity, 44),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -954,6 +952,7 @@ void showAddItemModal({
   // String selectedUnit = PRODUCT_TYPE.first;
   String refundType = ITEM_TYPE.first;
   String store = STORE_TYPE.first;
+  bool isMarket = false;
 
   List<Product> products = [];
   Product? selectedProduct;
@@ -1114,77 +1113,180 @@ void showAddItemModal({
                 const SizedBox(height: 12),
                 */
 
-                /// ================= REFUND TYPE =================
-                const Text(
-                  "Refund Type",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
+                // /// ================= REFUND TYPE =================
+                // const Text(
+                //   "Refund Type",
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w600,
+                //     color: Colors.black,
+                //   ),
+                // ),
 
-                const SizedBox(height: 4),
+                // const SizedBox(height: 4),
+
+                // Row(
+                //   children: ITEM_TYPE.map((type) {
+                //     return Expanded(
+                //       child: RadioListTile<String>(
+                //         contentPadding: EdgeInsets.zero,
+                //         dense: true,
+                //         title: Text(
+                //           type,
+                //           style: const TextStyle(color: Colors.black),
+                //         ),
+                //         value: type,
+                //         groupValue: refundType,
+                //         activeColor: const Color(0xFFFF7643),
+                //         onChanged: (value) {
+                //           if (value != null) {
+                //             setState(() => refundType = value);
+                //           }
+                //         },
+                //       ),
+                //     );
+                //   }).toList(),
+                // ),
+
+                // const SizedBox(height: 12),
+
+                // /// ================= STORE =================
+                // const Text(
+                //   "Store",
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w600,
+                //     color: Colors.black,
+                //   ),
+                // ),
+
+                // const SizedBox(height: 4),
+
+                // Row(
+                //   children: STORE_TYPE.map((type) {
+                //     return Expanded(
+                //       child: RadioListTile<String>(
+                //         contentPadding: EdgeInsets.zero,
+                //         dense: true,
+                //         title: Text(
+                //           type,
+                //           style: const TextStyle(color: Colors.black),
+                //         ),
+                //         value: type,
+                //         groupValue: store,
+                //         activeColor: const Color(0xFFFF7643),
+                //         onChanged: (value) {
+                //           if (value != null) {
+                //             setState(() => store = value);
+                //           }
+                //         },
+                //       ),
+                //     );
+                //   }).toList(),
+                // ),
+
+                // const SizedBox(height: 20),
 
                 Row(
-                  children: ITEM_TYPE.map((type) {
-                    return Expanded(
-                      child: RadioListTile<String>(
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(
-                          type,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                        value: type,
-                        groupValue: refundType,
-                        activeColor: const Color(0xFFFF7643),
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() => refundType = value);
-                          }
-                        },
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Ada barang ke pasar?",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
-                    );
-                  }).toList(),
+                    ),
+                    Switch(
+                      value: isMarket,
+                      activeColor: Colors.white,
+                      activeTrackColor: const Color(0xFFFF7643),
+                      inactiveThumbColor: Colors.white,
+                      inactiveTrackColor: Colors.grey.shade400,
+                      onChanged: (value) {
+                        setState(() {
+                          isMarket = value;
+                        });
+                      },
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 12),
 
-                /// ================= STORE =================
-                const Text(
-                  "Store",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                const SizedBox(height: 12),
+
+                if (!isMarket) ...[
+                  const Text(
+                    "Refund Type",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 4),
+                  const SizedBox(height: 4),
 
-                Row(
-                  children: STORE_TYPE.map((type) {
-                    return Expanded(
-                      child: RadioListTile<String>(
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(
-                          type,
-                          style: const TextStyle(color: Colors.black),
+                  Row(
+                    children: ITEM_TYPE.map((type) {
+                      return Expanded(
+                        child: RadioListTile<String>(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text(
+                            type,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                          value: type,
+                          groupValue: refundType,
+                          activeColor: const Color(0xFFFF7643),
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() {
+                                refundType = value;
+                              });
+                            }
+                          },
                         ),
-                        value: type,
-                        groupValue: store,
-                        activeColor: const Color(0xFFFF7643),
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() => store = value);
-                          }
-                        },
-                      ),
-                    );
-                  }).toList(),
-                ),
+                      );
+                    }).toList(),
+                  ),
 
-                const SizedBox(height: 20),
+                  const SizedBox(height: 12),
+
+                  const Text(
+                    "Store",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  Row(
+                    children: STORE_TYPE.map((type) {
+                      return Expanded(
+                        child: RadioListTile<String>(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text(
+                            type,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                          value: type,
+                          groupValue: store,
+                          activeColor: const Color(0xFFFF7643),
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() {
+                                store = value;
+                              });
+                            }
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
 
                 /// ================= BUTTON =================
                 SizedBox(
@@ -1227,9 +1329,10 @@ void showAddItemModal({
                                 paymentId: payment.id,
                                 productId: selectedProduct!.id,
                                 /*unit: selectedUnit,*/
-                                refundType: refundType,
+                                refundType: isMarket ? null : refundType,
                                 qty: qty,
-                                store: store,
+                                store: isMarket ? null : store,
+                                isMarket: isMarket,
                               );
 
                               Navigator.pop(context);
