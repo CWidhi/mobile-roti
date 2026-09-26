@@ -8,7 +8,7 @@ import 'package:frontend_roti/services/auth/userService.dart';
 import 'package:frontend_roti/services/rute/ruteService.dart';
 import 'package:frontend_roti/models/orderForm.dart';
 import 'package:frontend_roti/services/products/productServices.dart';
-import 'package:frontend_roti/constants/helper.dart';
+// import 'package:frontend_roti/constants/helper.dart';
 
 class OrderCreateScreen extends StatefulWidget {
   const OrderCreateScreen({super.key});
@@ -30,7 +30,8 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
   List<UserModel> users = [];
   List<RouteLine> rutes = [];
   List<Product> products = [];
-  List<OrderFormItem> items = [OrderFormItem()];
+  // List<OrderFormItem> items = [OrderFormItem()];
+  List<OrderFormItem> items = [OrderFormItem()..unit = "Ball",];
 
   /// ================= INIT =================
   @override
@@ -77,10 +78,10 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
       return;
     }
 
-    if (items.any((e) => e.productId == null || e.unit == null)) {
-      _error("Lengkapi item order");
-      return;
-    }
+    // if (items.any((e) => e.productId == null || e.unit == null)) {
+    //   _error("Lengkapi item order");
+    //   return;
+    // }
 
     setState(() => isLoading = true);
 
@@ -193,7 +194,7 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
             }),
 
             TextButton.icon(
-              onPressed: () => setState(() => items.add(OrderFormItem())),
+              onPressed: () => setState(() => items.add(OrderFormItem()..unit = "Ball")),
               icon: const Icon(Icons.add, color: Colors.indigo),
               label: const Text(
                 "Tambah Item",
@@ -269,14 +270,14 @@ class _OrderCreateScreenState extends State<OrderCreateScreen> {
           const SizedBox(height: 12),
 
           /// UNIT DROPDOWN
-          _label("Unit"),
-          _dropdown<String>(
-            value: item.unit,
-            hint: "Pilih Unit",
-            items: PRODUCT_TYPE,
-            label: (u) => u,
-            onChanged: (v) => setState(() => item.unit = v),
-          ),
+          // _label("Unit"),
+          // _dropdown<String>(
+          //   value: item.unit,
+          //   hint: "Pilih Unit",
+          //   items: PRODUCT_TYPE,
+          //   label: (u) => u,
+          //   onChanged: (v) => setState(() => item.unit = v),
+          // ),
 
           const SizedBox(height: 12),
 

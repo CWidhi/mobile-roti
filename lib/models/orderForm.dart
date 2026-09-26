@@ -7,7 +7,7 @@ class OrderFormItem {
 
   OrderFormItem({
     this.productId,
-    this.unit,
+    this.unit = "Ball",
     this.qty = 1,
     this.marketStore = false,
     this.retail = false,
