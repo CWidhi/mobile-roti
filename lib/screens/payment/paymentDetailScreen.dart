@@ -8,6 +8,7 @@ import 'package:frontend_roti/services/products/productServices.dart';
 import 'package:frontend_roti/models/product.dart';
 import 'package:frontend_roti/constants/generic.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend_roti/screens/order/orderDetailScreen.dart';
 
 class PaymentDetailScreen extends StatefulWidget {
   final int paymentId;
@@ -163,6 +164,47 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                       _infoRow(
                         "Sisa Pembayaran",
                         currency.format(data.remainingAmount),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                _sectionCard(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => OrderPickingDetailScreen(
+                                  orderId: data.orderPickingId,
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.shopping_cart_outlined,
+                            size: 18,
+                          ),
+                          label: const Text("Lihat Detail Order"),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: const Color(0xFFFF7643),
+                            side: const BorderSide(
+                              color: Color(0xFFFF7643),
+                            ),
+                            minimumSize: const Size(double.infinity, 44),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),

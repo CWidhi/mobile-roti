@@ -4,6 +4,7 @@ import 'package:frontend_roti/models/order.dart';
 import 'package:frontend_roti/services/order/orderService.dart';
 import 'package:frontend_roti/services/auth/userService.dart';
 import 'package:frontend_roti/screens/order/orderUpdateScreen.dart';
+import 'package:frontend_roti/screens/payment/paymentDetailScreen.dart';
 
 class OrderPickingDetailScreen extends StatefulWidget {
   final int orderId;
@@ -124,14 +125,46 @@ class _OrderPickingDetailScreenState extends State<OrderPickingDetailScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      "Items",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Items",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+
+                        TextButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => PaymentDetailScreen(
+                                  paymentId: order!.paymentId!,
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.payment,
+                            size: 18,
+                          ),
+                          label: const Text("Pembayaran"),
+                          style: TextButton.styleFrom(
+                            foregroundColor: const Color(0xFFFF7643),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+
                     const SizedBox(height: 8),
                     ...order!.items.map(
                       (item) => _sectionCard(

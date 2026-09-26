@@ -8,6 +8,7 @@ class OrderPicking {
   /// RELATION
   final UserModel? user;
   final RouteLine? rute;
+  final int? paymentId;
 
   /// FALLBACK ID (aman kalau BE belum expand)
   final int userId;
@@ -28,6 +29,7 @@ class OrderPicking {
     required this.items,
     this.user,
     this.rute,
+    this.paymentId,
   });
 
   factory OrderPicking.fromJson(Map<String, dynamic> json) {
@@ -45,6 +47,9 @@ class OrderPicking {
       rute: json['rute'] is Map<String, dynamic>
           ? RouteLine.fromJson(json['rute'])
           : null,
+
+      /// PAYMENT
+      paymentId: json['payment_id'],
 
       orderDate: DateTime.parse(json['order_date']),
       total: json['total'],

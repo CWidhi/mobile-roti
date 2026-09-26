@@ -6,6 +6,7 @@ class Payment {
   final String userName;
   final String orderPicking;
   final int orderPickingTotal;
+  final int orderPickingId;
   final DateTime paymentDate;
   final int totalOrder;
   final int totalPaid;
@@ -25,6 +26,7 @@ class Payment {
     required this.remainingAmount,
     required this.status,
     required this.items,
+    required this.orderPickingId,
   });
 
   factory Payment.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class Payment {
       userName: "${user['first_name']} ${user['last_name']}",
       orderPicking: orderPicking?['rute']?['name'] ?? "-",
       orderPickingTotal: orderPicking?['total'] ?? 0,
+      orderPickingId: orderPicking?['id'],
       paymentDate: DateTime.parse(json['payment_date']),
       totalOrder: json['total_order'],
       totalPaid: json['total_paid'],
