@@ -34,3 +34,11 @@ class RupiahInputFormatter extends TextInputFormatter {
     );
   }
 }
+
+String formatNumber(dynamic value) {
+  final number = int.tryParse(value.toString()) ?? 0;
+  return number.toString().replaceAllMapped(
+    RegExp(r'\B(?=(\d{3})+(?!\d))'),
+    (match) => '.',
+  );
+}

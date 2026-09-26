@@ -4,6 +4,7 @@ import 'package:frontend_roti/services/products/priceService.dart';
 import 'package:frontend_roti/constants/helper.dart';
 import 'package:frontend_roti/screens/product/price/priceCreateScreen.dart';
 import 'package:frontend_roti/screens/product/price/priceUpdateScreen.dart';
+import 'package:frontend_roti/constants/generic.dart';
 
 class ProductPriceScreen extends StatefulWidget {
   final int productId;
@@ -181,7 +182,7 @@ class _PriceCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "Rp ${price.price}",
+                "Rp ${formatNumber(price.price)}",
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

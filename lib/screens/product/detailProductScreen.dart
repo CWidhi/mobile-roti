@@ -349,7 +349,8 @@ class _BottomBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
-            onPressed: () => _showAdjustStockModal(context, productId: productId),
+            onPressed: () =>
+                _showAdjustStockModal(context, productId: productId),
             icon: const Icon(
               Icons.inventory_2_outlined,
               color: Color(0xFFFF7643),
@@ -443,7 +444,7 @@ class _BottomBar extends StatelessWidget {
     BuildContext context, {
     required int productId,
   }) async {
-    final qtyController = TextEditingController();
+    String qtyText = "";
     String selectedUnit = "Ball";
     bool isLoading = false;
 
@@ -451,7 +452,7 @@ class _BottomBar extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return StatefulBuilder(
-          builder: (context, setState) {
+          builder: (dialogContext, setDialogState) {
             return AlertDialog(
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
@@ -465,10 +466,12 @@ class _BottomBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
-                    controller: qtyController,
                     keyboardType: TextInputType.number,
                     enabled: !isLoading,
                     style: const TextStyle(color: Colors.black),
+                    onChanged: (value) {
+                      qtyText = value;
+                    },
                     decoration: InputDecoration(
                       labelText: "Qty",
                       hintText: "Masukkan jumlah stock",
@@ -512,7 +515,7 @@ class _BottomBar extends StatelessWidget {
                         ? null
                         : (value) {
                             if (value != null) {
-                              setState(() {
+                              setDialogState(() {
                                 selectedUnit = value;
                               });
                             }
@@ -525,7 +528,9 @@ class _BottomBar extends StatelessWidget {
                   onPressed: isLoading
                       ? null
                       : () {
-                          Navigator.pop(dialogContext, false);
+                          debugPrint("[AdjustStock] Cancel - qty: '$qtyText'");
+
+                          Navigator.of(dialogContext).pop(false);
                         },
                   child: const Text(
                     "Batal",
@@ -540,40 +545,73 @@ class _BottomBar extends StatelessWidget {
                   onPressed: isLoading
                       ? null
                       : () async {
-                          final qty = int.tryParse(qtyController.text);
-
-                          if (qty == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  "Qty harus berupa angka",
-                                ),
-                              ),
-                            );
-                            return;
-                          }
-
-                          setState(() {
-                            isLoading = true;
-                          });
-
                           try {
+                            final text = qtyText.trim();
+
+                            debugPrint(
+                              "[AdjustStock] Submit - qty: '$text', unit: '$selectedUnit'",
+                            );
+
+                            if (text.isEmpty) {
+                              debugPrint("[AdjustStock] ERROR: Qty kosong");
+
+                              ScaffoldMessenger.of(dialogContext).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Qty wajib diisi"),
+                                ),
+                              );
+
+                              return;
+                            }
+
+                            final qty = int.tryParse(text);
+
+                            if (qty == null) {
+                              debugPrint(
+                                "[AdjustStock] ERROR: Qty bukan angka: '$text'",
+                              );
+
+                              ScaffoldMessenger.of(dialogContext).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Qty harus berupa angka"),
+                                ),
+                              );
+
+                              return;
+                            }
+
+                            setDialogState(() {
+                              isLoading = true;
+                            });
+
+                            debugPrint(
+                              "[AdjustStock] Calling API: productId=$productId, stock=$qty, unit=$selectedUnit",
+                            );
+
                             await ProductService.adjustStock(
                               productId: productId,
                               stock: qty,
                               unit: selectedUnit,
                             );
 
-                            if (context.mounted) {
-                              Navigator.pop(dialogContext, true);
-                            }
-                          } catch (e) {
-                            setState(() {
-                              isLoading = false;
-                            });
+                            debugPrint("[AdjustStock] SUCCESS");
 
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
+                            if (dialogContext.mounted) {
+                              Navigator.of(dialogContext).pop(true);
+                            }
+                          } catch (e, stackTrace) {
+                            debugPrint("[AdjustStock] ERROR: $e");
+
+                            debugPrint(
+                              "[AdjustStock] STACK TRACE:\n$stackTrace",
+                            );
+
+                            if (dialogContext.mounted) {
+                              setDialogState(() {
+                                isLoading = false;
+                              });
+
+                              ScaffoldMessenger.of(dialogContext).showSnackBar(
                                 SnackBar(
                                   content: Text(
                                     e.toString().replaceFirst(
@@ -607,9 +645,11 @@ class _BottomBar extends StatelessWidget {
       },
     );
 
-    qtyController.dispose();
+    debugPrint("[AdjustStock] Dialog result: $result");
 
-    if (result == true) {
+    if (result == true && context.mounted) {
+      debugPrint("[AdjustStock] Refresh product");
+
       onUpdate();
     }
   }
