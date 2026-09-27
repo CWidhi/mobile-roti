@@ -154,7 +154,7 @@ class PaymentService {
     required int paymentId,
     required int productId,
     /*required String unit,*/
-    String? refundType, // "retur" / "bs"
+    required refundType, // "retur" / "bs"
     required int qty,
     String? store, // "pasar" / "toko"
     required bool isMarket,
@@ -176,7 +176,7 @@ class PaymentService {
         /*"unit": unit,*/
         "refund_type": refundType,
         "qty": qty,
-        "store": store,
+        if (store != null) "store": store,
         "is_market": isMarket,
       }),
     );

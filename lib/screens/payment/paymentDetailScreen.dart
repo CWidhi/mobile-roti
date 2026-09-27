@@ -296,7 +296,16 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
   }
 
   Widget _itemCard(PaymentItem item, NumberFormat currency) {
-    final isRetur = item.refundType.toLowerCase() == "retur";
+    final refundType = item.refundType.toLowerCase();
+
+    final isRetur = refundType == "retur";
+    final isMarket = refundType == "market";
+
+    final badgeColor = isRetur
+      ? Colors.red
+      : isMarket
+          ? Colors.green
+          : Colors.orange;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -318,6 +327,21 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
               color: Colors.black,
             ),
           ),
+
+          const SizedBox(height: 6),
+
+          /// ================= MARKET INFO =================
+          if (isMarket) ...[
+            const SizedBox(height: 4),
+            const Text(
+              "Potongan barang yang ke pasar",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
 
           const SizedBox(height: 6),
 
@@ -351,11 +375,12 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
 
           /// ================= REFUND TYPE =================
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
             decoration: BoxDecoration(
-              color: isRetur
-                  ? Colors.red.withOpacity(0.1)
-                  : Colors.orange.withOpacity(0.1),
+              color: badgeColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -363,7 +388,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
-                color: isRetur ? Colors.red : Colors.orange,
+                color: badgeColor,
               ),
             ),
           ),
@@ -1329,7 +1354,7 @@ void showAddItemModal({
                                 paymentId: payment.id,
                                 productId: selectedProduct!.id,
                                 /*unit: selectedUnit,*/
-                                refundType: isMarket ? null : refundType,
+                                refundType: isMarket ? "market" : refundType,
                                 qty: qty,
                                 store: isMarket ? null : store,
                                 isMarket: isMarket,
